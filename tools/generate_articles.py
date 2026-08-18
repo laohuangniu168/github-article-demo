@@ -139,7 +139,11 @@ description: "{generated.description}"
 
 # {generated.title}
 
+{{% raw %}}
+
 {generated.markdown}
+
+{{% endraw %}}
 """
 
 

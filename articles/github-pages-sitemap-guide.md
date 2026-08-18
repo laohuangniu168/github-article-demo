@@ -5,6 +5,8 @@ description: "介绍 GitHub Pages 站点生成、配置与提交 Sitemap 的完�
 
 # GitHub Pages Sitemap配置教程
 
+{% raw %}
+
 ## Sitemap 在 GitHub Pages 中的作用
 
 Sitemap 是一个列出站点公开页面地址的 XML 文件，通常位于：
@@ -208,3 +210,5 @@ baseurl: "/docs"
 不应公开或不适合作为搜索结果入口的页面，可以从手工 XML 中删除；使用 Jekyll 插件时，则应在对应内容的页面级配置中将 `sitemap` 设为 `false`。同时检查该页面是否仍被站内导航大量链接，以及是否需要设置合适的 `noindex`。从 Sitemap 删除 URL 本身并不能阻止搜索引擎通过其他链接发现它。
 
 完成配置后，重点不是频繁重复提交，而是保证 Sitemap 地址长期稳定、URL 可访问、域名和路径正确，并在新增或删除页面时同步更新。对于 Jekyll 站点，自动生成通常最省维护成本；对于自定义构建项目，则应把 Sitemap 生成纳入部署流程，避免线上文件与实际内容脱节。
+
+{% endraw %}

@@ -5,6 +5,8 @@ description: "介绍 GitHub Pages 中 robots.txt 的放置位置、规则写法�
 
 # GitHub Pages robots.txt配置方法
 
+{% raw %}
+
 ## robots.txt 在 GitHub Pages 中如何生效
 
 `robots.txt` 是放在网站域名根目录下的纯文本文件，用于向搜索引擎爬虫说明哪些路径可以抓取。爬虫通常只会查找以下地址：
@@ -227,3 +229,5 @@ curl https://example.com/robots.txt
 GitHub Pages 更新通常需要等待部署任务完成。可以在仓库的 **Actions** 或 **Settings → Pages** 中查看部署状态；若使用 CDN 或浏览器缓存，也可稍后重新请求并检查实际响应。
 
 robots.txt 的核心是位置正确、规则简洁、与真实 URL 结构一致。用户站点可以直接控制域名根规则，而使用 `github.io/project-name/` 的项目站点需要特别注意根路径限制。配置完成后，以线上 `/robots.txt` 的实际响应为准，而不是只检查仓库中是否存在同名文件。
+
+{% endraw %}

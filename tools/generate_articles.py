@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import argparse
 import re
 from dataclasses import dataclass
 from pathlib import Path
+
+from ai_content_generator import generate_article
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -19,13 +22,6 @@ class ArticleSpec:
 
 
 def load_articles(path: Path) -> list[ArticleSpec]:
-    """
-    读取文章定义。
-
-    输入格式：
-    slug|title
-    """
-
     if not path.exists():
         raise FileNotFoundError(f"输入文件不存在：{path}")
 
@@ -64,14 +60,10 @@ def load_articles(path: Path) -> list[ArticleSpec]:
             )
 
         if slug in seen_slugs:
-            raise ValueError(
-                f"发现重复 slug：{slug}"
-            )
+            raise ValueError(f"发现重复 slug：{slug}")
 
         if title in seen_titles:
-            raise ValueError(
-                f"发现重复标题：{title}"
-            )
+            raise ValueError(f"发现重复标题：{title}")
 
         seen_slugs.add(slug)
         seen_titles.add(title)
@@ -94,7 +86,7 @@ def make_description(title: str) -> str:
     )
 
 
-def build_article(article: ArticleSpec) -> str:
+def build_template_article(article: ArticleSpec) -> str:
     title = article.title
     description = make_description(title)
 
@@ -137,45 +129,132 @@ description: "{description}"
 """
 
 
+def build_ai_article(article: ArticleSpec) -> str:
+    generated = generate_article(article.title)
+
+    return f"""---
+title: "{generated.title}"
+description: "{generated.description}"
+---
+
+# {generated.title}
+
+{generated.markdown}
+"""
+
+
 def generate_articles(
     articles: list[ArticleSpec],
-) -> tuple[list[Path], list[Path]]:
+    use_ai: bool,
+) -> tuple[list[Path], list[Path], list[tuple[ArticleSpec, str]]]:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     created: list[Path] = []
     skipped: list[Path] = []
+    failed: list[tuple[ArticleSpec, str]] = []
 
-    for article in articles:
+    for index, article in enumerate(articles, start=1):
         output_file = OUTPUT_DIR / f"{article.slug}.md"
 
         if output_file.exists():
+            print(
+                f"[{index}/{len(articles)}] "
+                f"[SKIPPED] {output_file.relative_to(PROJECT_ROOT)}"
+            )
             skipped.append(output_file)
             continue
 
-        content = build_article(article)
-
-        output_file.write_text(
-            content,
-            encoding="utf-8",
-            newline="\n",
+        print(
+            f"[{index}/{len(articles)}] "
+            f"开始生成：{article.title}"
         )
 
-        created.append(output_file)
+        try:
+            if use_ai:
+                content = build_ai_article(article)
+            else:
+                content = build_template_article(article)
 
-    return created, skipped
+            output_file.write_text(
+                content,
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            created.append(output_file)
+
+            print(
+                f"[{index}/{len(articles)}] "
+                f"[CREATED] {output_file.relative_to(PROJECT_ROOT)}"
+            )
+
+        except Exception as exc:
+            failed.append((article, str(exc)))
+
+            print(
+                f"[{index}/{len(articles)}] "
+                f"[FAILED] {article.slug}：{exc}"
+            )
+
+    return created, skipped, failed
+
+
+def resolve_input_file(input_path: Path) -> Path:
+    if input_path.is_absolute():
+        return input_path
+
+    return PROJECT_ROOT / input_path
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="GitHub Article Generator"
+    )
+
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=INPUT_FILE,
+        help="指定文章输入文件，默认使用 input/articles.txt",
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="只验证输入并显示发布计划，不生成文章文件",
+    )
+
+    parser.add_argument(
+        "--ai",
+        action="store_true",
+        help="使用 OpenAI API 生成差异化文章正文",
+    )
+
+    args = parser.parse_args()
+
+    input_file = resolve_input_file(args.input)
+
     print("=" * 60)
-    print("GitHub Article Generator v1.1")
+    print("GitHub Article Generator v1.2")
     print("=" * 60)
 
-    print(f"输入文件：{INPUT_FILE}")
+    print(f"输入文件：{input_file}")
     print(f"输出目录：{OUTPUT_DIR}")
+
+    if args.ai:
+        print("内容模式：AI")
+    else:
+        print("内容模式：LOCAL TEMPLATE")
+
+    if args.dry_run:
+        print("执行模式：DRY RUN")
+    else:
+        print("执行模式：WRITE")
+
     print()
 
     try:
-        articles = load_articles(INPUT_FILE)
+        articles = load_articles(input_file)
     except Exception as exc:
         print(f"[ERROR] {exc}")
         return 1
@@ -196,27 +275,48 @@ def main() -> int:
             f" -> {article.title}"
         )
 
-    created, skipped = generate_articles(articles)
+    if args.dry_run:
+        print()
+        print("DRY RUN")
+        print("-" * 60)
+        print("输入验证通过。")
+        print(f"计划文章数量：{len(articles)}")
+
+        if args.ai:
+            print("AI 模式已请求，但 DRY RUN 不调用 OpenAI API。")
+
+        print("未生成任何文章文件。")
+        print("未产生文章生成 API 调用。")
+        print("-" * 60)
+        return 0
+
+    print()
+    print("开始生成")
+    print("-" * 60)
+
+    created, skipped, failed = generate_articles(
+        articles=articles,
+        use_ai=args.ai,
+    )
 
     print()
     print("生成结果")
     print("-" * 60)
-
-    for path in created:
-        print(
-            f"[CREATED] "
-            f"{path.relative_to(PROJECT_ROOT)}"
-        )
-
-    for path in skipped:
-        print(
-            f"[SKIPPED] "
-            f"{path.relative_to(PROJECT_ROOT)}"
-        )
-
-    print("-" * 60)
     print(f"新生成：{len(created)}")
     print(f"已存在跳过：{len(skipped)}")
+    print(f"生成失败：{len(failed)}")
+
+    if failed:
+        print()
+        print("失败清单")
+        print("-" * 60)
+
+        for article, error in failed:
+            print(
+                f"[FAILED] {article.slug}"
+                f" -> {article.title}"
+                f" -> {error}"
+            )
 
     print()
     print("安全边界：")
@@ -224,6 +324,9 @@ def main() -> int:
     print("- 未执行 git commit")
     print("- 未执行 git push")
     print("- 未覆盖已有文章")
+
+    if failed:
+        return 1
 
     return 0
 

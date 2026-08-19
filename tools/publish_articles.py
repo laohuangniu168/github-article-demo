@@ -2,12 +2,18 @@ from __future__ import annotations
 
 import argparse
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_INPUT = PROJECT_ROOT / "input" / "articles.txt"
+AUDIT_SCRIPTS = (
+    ("Quality Audit", "audit_ai_articles.py"),
+    ("Similarity Audit", "audit_article_similarity.py"),
+    ("Jekyll Safety Audit", "audit_jekyll_safety.py"),
+)
 
 
 @dataclass(frozen=True)
@@ -116,6 +122,56 @@ def get_git_state() -> tuple[str, str]:
     return head, origin_main
 
 
+def run_audit(name: str, script_name: str, input_file: Path) -> None:
+    print()
+    print(name)
+    print("-" * 72)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(PROJECT_ROOT / "tools" / script_name),
+            "--input",
+            str(input_file),
+        ],
+        cwd=PROJECT_ROOT,
+        check=False,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"{name} 失败（exit={result.returncode}）"
+        )
+
+
+def execute_gate6_4(
+    articles: list[ArticleSpec],
+    input_file: Path,
+) -> None:
+    from generate_articles import generate_articles
+
+    print()
+    print("AI Generate")
+    print("-" * 72)
+
+    created, skipped, failed = generate_articles(
+        articles=articles,
+        use_ai=True,
+    )
+
+    print(f"新生成：{len(created)}")
+    print(f"已存在跳过：{len(skipped)}")
+    print(f"生成失败：{len(failed)}")
+
+    if failed:
+        raise RuntimeError(
+            f"AI Generate 失败：{len(failed)} 篇"
+        )
+
+    for name, script_name in AUDIT_SCRIPTS:
+        run_audit(name, script_name, input_file)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Controlled GitHub Article Publisher"
@@ -128,17 +184,18 @@ def main() -> int:
         help="文章输入文件",
     )
 
-    parser.add_argument(
-        "--ai",
-        action="store_true",
-        help="声明后续正式流程使用 AI 内容生成",
-    )
+    mode = parser.add_mutually_exclusive_group(required=True)
 
-    parser.add_argument(
+    mode.add_argument(
         "--dry-run",
         action="store_true",
-        required=True,
-        help="Gate 6.2 仅允许 dry-run",
+        help="只执行只读预检和计划展示",
+    )
+
+    mode.add_argument(
+        "--execute-gate6-4",
+        action="store_true",
+        help="显式进入 Gate 6.4 AI 生成与审计流程",
     )
 
     args = parser.parse_args()
@@ -151,11 +208,11 @@ def main() -> int:
     print("Controlled GitHub Article Publisher v0.1")
     print("=" * 72)
 
-    print("执行模式：DRY RUN ONLY")
     print(
-        "内容模式："
-        + ("AI" if args.ai else "LOCAL TEMPLATE")
+        "执行模式："
+        + ("DRY RUN" if args.dry_run else "GATE 6.4 EXECUTE")
     )
+    print("内容模式：AI" if args.execute_gate6_4 else "内容模式：PLAN ONLY")
     print(f"输入文件：{input_file}")
     print()
 
@@ -198,6 +255,30 @@ def main() -> int:
             f"{article.slug}.md"
             f" -> {article.title}"
         )
+
+    if args.execute_gate6_4:
+        try:
+            execute_gate6_4(articles, input_file)
+        except Exception as exc:
+            print()
+            print("Result Summary")
+            print("-" * 72)
+            print(f"[BLOCKED] {exc}")
+            print("FINAL: GATE6_4_BLOCKED")
+            return 1
+
+        print()
+        print("Result Summary")
+        print("-" * 72)
+        print("AI Generate：PASS")
+        print("Quality Audit：PASS")
+        print("Similarity Audit：PASS")
+        print("Jekyll Safety Audit：PASS")
+        print("- 未执行 git add")
+        print("- 未执行 git commit")
+        print("- 未执行 git push")
+        print("FINAL: GATE6_4_PASS")
+        return 0
 
     print()
     print("Safety Boundary")

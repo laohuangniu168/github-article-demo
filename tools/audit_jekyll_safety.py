@@ -1,17 +1,18 @@
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-INPUT_FILE = PROJECT_ROOT / "input" / "articles-gate5.txt"
+DEFAULT_INPUT_FILE = PROJECT_ROOT / "input" / "articles-gate5.txt"
 ARTICLES_DIR = PROJECT_ROOT / "articles"
 
 
-def load_slugs() -> list[str]:
+def load_slugs(input_file: Path) -> list[str]:
     slugs: list[str] = []
 
-    for raw_line in INPUT_FILE.read_text(
+    for raw_line in input_file.read_text(
         encoding="utf-8-sig"
     ).splitlines():
         line = raw_line.strip()
@@ -61,7 +62,26 @@ def audit_file(path: Path) -> list[str]:
 
 
 def main() -> int:
-    slugs = load_slugs()
+
+    parser = argparse.ArgumentParser(
+        description="Jekyll Liquid Safety Audit"
+    )
+
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=DEFAULT_INPUT_FILE,
+        help="指定需要审计的文章输入文件",
+    )
+
+    args = parser.parse_args()
+
+    input_file = args.input
+
+    if not input_file.is_absolute():
+        input_file = PROJECT_ROOT / input_file
+
+    slugs = load_slugs(input_file)
 
     passed = 0
     failed = 0

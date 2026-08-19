@@ -1,16 +1,16 @@
 from pathlib import Path
 import re
-
+import argparse
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-INPUT_FILE = PROJECT_ROOT / "input" / "articles-gate5.txt"
+DEFAULT_INPUT_FILE = PROJECT_ROOT / "input" / "articles-gate5.txt"
 ARTICLES_DIR = PROJECT_ROOT / "articles"
 
 
-def load_specs():
+def load_specs(input_file):
     specs = []
 
-    for line in INPUT_FILE.read_text(
+    for line in input_file.read_text(
         encoding="utf-8-sig"
     ).splitlines():
         line = line.strip()
@@ -59,7 +59,22 @@ def extract_front_matter(text):
 
 
 def main():
-    specs = load_specs()
+    parser = argparse.ArgumentParser(
+        description="AI Article Quality Audit"
+    )
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=DEFAULT_INPUT_FILE,
+        help="指定需要审计的文章输入文件",
+    )
+    args = parser.parse_args()
+
+    input_file = args.input
+    if not input_file.is_absolute():
+        input_file = PROJECT_ROOT / input_file
+
+    specs = load_specs(input_file)
 
     print("=" * 90)
     print("Gate 5 AI Article Quality Audit")

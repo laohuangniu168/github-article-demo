@@ -21,6 +21,17 @@ class ArticleSpec:
     title: str
 
 
+def strip_trailing_whitespace(text: str) -> str:
+    """删除每行末尾的空格和 Tab，保留其余字符与换行结构。"""
+
+    return re.sub(
+        r"[ \t]+(?=\r?$)",
+        "",
+        text,
+        flags=re.MULTILINE,
+    )
+
+
 def load_articles(path: Path) -> list[ArticleSpec]:
     if not path.exists():
         raise FileNotFoundError(f"输入文件不存在：{path}")
@@ -178,6 +189,8 @@ def generate_articles(
                 content = build_ai_article(article)
             else:
                 content = build_template_article(article)
+
+            content = strip_trailing_whitespace(content)
 
             output_file.write_text(
                 content,

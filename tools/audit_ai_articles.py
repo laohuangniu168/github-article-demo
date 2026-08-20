@@ -58,6 +58,29 @@ def extract_front_matter(text):
     return title, description
 
 
+def iter_non_fenced_lines(text):
+    fence = None
+
+    for line in text.splitlines():
+        fence_match = re.match(r"^ {0,3}(`{3,}|~{3,})", line)
+
+        if fence_match:
+            marker = fence_match.group(1)
+
+            if fence is None:
+                fence = marker
+            elif (
+                marker[0] == fence[0]
+                and len(marker) >= len(fence)
+            ):
+                fence = None
+
+            continue
+
+        if fence is None:
+            yield line
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="AI Article Quality Audit"
@@ -82,6 +105,7 @@ def main():
 
     passed = 0
     failed = 0
+    total = len(specs)
 
     for index, (slug, expected_title) in enumerate(
         specs,
@@ -93,7 +117,7 @@ def main():
 
         if not path.exists():
             print(
-                f"[{index}/10] FAIL "
+                f"[{index}/{total}] FAIL "
                 f"{slug}: 文件不存在"
             )
             failed += 1
@@ -107,21 +131,25 @@ def main():
             text
         )
 
+        heading_lines = list(
+            iter_non_fenced_lines(text)
+        )
+
         h1_count = sum(
             1
-            for line in text.splitlines()
+            for line in heading_lines
             if line.startswith("# ")
         )
 
         h2_count = sum(
             1
-            for line in text.splitlines()
+            for line in heading_lines
             if line.startswith("## ")
         )
 
         h3_count = sum(
             1
-            for line in text.splitlines()
+            for line in heading_lines
             if line.startswith("### ")
         )
 
@@ -158,7 +186,7 @@ def main():
         )
 
         print(
-            f"[{index}/10] {status} | "
+            f"[{index}/{total}] {status} | "
             f"{slug} | "
             f"chars={body_chars} | "
             f"desc={len(description)} | "

@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import hashlib
 import re
 import unicodedata
 from dataclasses import dataclass
-from typing import Iterable, Sequence
+from pathlib import Path
+from typing import Callable, Iterable, Sequence
 
 from article_spec import SLUG_PATTERN
-from internal_link_registry import RegistryEntry, RegistrySnapshot, compute_registry_version
+from internal_link_registry import CANONICAL_BASE, RegistryEntry, RegistrySnapshot, compute_registry_version
 from internal_link_selector import (
     CONTROLLED_TOPIC_TERMS,
     LinkSelectionPlan,
@@ -23,6 +25,7 @@ RELATED_TARGET_MIN = 8
 RELATED_MAX = 10
 ANCHOR_MIN_LENGTH = 2
 ANCHOR_MAX_LENGTH = 40
+BATCH_EXTENSION_VERSION_PREFIX = "ilx1:"
 
 FORBIDDEN_ANCHORS = frozenset(
     {
@@ -65,6 +68,35 @@ class ScanResult:
     endraw_start: int
     final_summary_start: int | None
     paragraph_count: int
+
+
+@dataclass(frozen=True)
+class BatchExtensionEntry:
+    slug: str
+    title: str
+    cluster: str
+    batch_id: str
+    markdown_path: str
+    relative_url: str
+    canonical_url: str
+    quality_status: str
+    published: bool
+    eligible_as_target: bool
+
+
+@dataclass(frozen=True)
+class BatchRegistryExtension:
+    entries: tuple[BatchExtensionEntry, ...]
+    batch_id: str
+    extension_version: str
+
+
+def compute_batch_extension_version(entries: Sequence[BatchExtensionEntry]) -> str:
+    payload = "\n".join(
+        "|".join((entry.slug, entry.title, entry.cluster, entry.markdown_path, entry.quality_status))
+        for entry in sorted(entries, key=lambda item: item.slug)
+    )
+    return BATCH_EXTENSION_VERSION_PREFIX + hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -439,6 +471,9 @@ def inject_links(
     config_version: str,
     batch_id: str,
     protected_slugs: Iterable[str] = (),
+    batch_extension: BatchRegistryExtension | None = None,
+    extension_version: str | None = None,
+    file_exists: Callable[[str], bool] | None = None,
 ) -> InjectionOutcome:
     if article_slug in set(protected_slugs):
         return _hard_fail(markdown, article_slug, plan, "EXISTING_PRODUCTION_MUTATION_ATTEMPT", "Frozen production article 不可注入")
@@ -458,18 +493,49 @@ def inject_links(
     if config_version != plan.config_version:
         return _hard_fail(markdown, article_slug, plan, "CONFIG_VERSION_MISMATCH", "Config version 不一致")
 
-    entries = {entry.slug: entry for entry in registry.entries}
+    frozen_entries = {entry.slug: entry for entry in registry.entries}
+    extension_entries = {entry.slug: entry for entry in batch_extension.entries} if batch_extension else {}
+    file_exists = file_exists or (lambda path: (Path(__file__).resolve().parent.parent / path).is_file())
     selected_slugs = [target.target_slug for target in plan.selected_targets]
     if len(selected_slugs) != len(set(selected_slugs)):
         return _hard_fail(markdown, article_slug, plan, "DUPLICATE_TARGET_REJECTED", "SelectionPlan target 重复")
-    for target_slug in selected_slugs:
+    resolved_entries: dict[str, RegistryEntry | BatchExtensionEntry] = {}
+    for selected_target in plan.selected_targets:
+        target_slug = selected_target.target_slug
         if target_slug == article_slug:
             return _hard_fail(markdown, article_slug, plan, "SELF_LINK_REJECTED", "SelectionPlan 包含 self target", target_slug)
-        entry = entries.get(target_slug)
-        if entry is None:
-            return _hard_fail(markdown, article_slug, plan, "REGISTRY_TARGET_MISSING", "target 不在 Frozen Registry", target_slug)
-        if not entry.published or not entry.eligible_as_target or not SLUG_PATTERN.fullmatch(entry.slug):
-            return _hard_fail(markdown, article_slug, plan, "REGISTRY_TARGET_INELIGIBLE", "target 不合格", target_slug)
+        if selected_target.source == "frozen_registry":
+            entry = frozen_entries.get(target_slug)
+            if entry is None:
+                code = "TARGET_SOURCE_MISMATCH" if target_slug in extension_entries else "REGISTRY_TARGET_MISSING"
+                return _hard_fail(markdown, article_slug, plan, code, "Frozen Registry target 来源不一致或不存在", target_slug)
+            if not entry.published or not entry.eligible_as_target or not SLUG_PATTERN.fullmatch(entry.slug):
+                return _hard_fail(markdown, article_slug, plan, "REGISTRY_TARGET_INELIGIBLE", "Frozen Registry target 不合格", target_slug)
+        elif selected_target.source == "batch_registry_extension":
+            if batch_extension is None:
+                return _hard_fail(markdown, article_slug, plan, "BATCH_EXTENSION_REQUIRED", "SelectionPlan 需要 Batch Registry Extension", target_slug)
+            if batch_extension.batch_id != batch_id:
+                return _hard_fail(markdown, article_slug, plan, "BATCH_ID_MISMATCH", "Extension batch_id 不一致", target_slug)
+            computed_extension_version = compute_batch_extension_version(batch_extension.entries)
+            if not extension_version or extension_version != batch_extension.extension_version or extension_version != computed_extension_version:
+                return _hard_fail(markdown, article_slug, plan, "BATCH_EXTENSION_VERSION_MISMATCH", "Extension version 不一致", target_slug)
+            entry = extension_entries.get(target_slug)
+            if entry is None:
+                code = "TARGET_SOURCE_MISMATCH" if target_slug in frozen_entries else "BATCH_EXTENSION_TARGET_MISSING"
+                return _hard_fail(markdown, article_slug, plan, code, "Batch Extension target 来源不一致或不存在", target_slug)
+            if entry.batch_id != batch_id:
+                return _hard_fail(markdown, article_slug, plan, "BATCH_ID_MISMATCH", "target batch_id 不一致", target_slug)
+            if entry.quality_status != "PASS" or not entry.published:
+                return _hard_fail(markdown, article_slug, plan, "BATCH_TARGET_QUALITY_NOT_PASS", "Batch target quality 未通过", target_slug)
+            if not entry.eligible_as_target or not SLUG_PATTERN.fullmatch(entry.slug):
+                return _hard_fail(markdown, article_slug, plan, "REGISTRY_TARGET_INELIGIBLE", "Batch target 不合格", target_slug)
+            if entry.relative_url != f"./{target_slug}.html" or entry.canonical_url != f"{CANONICAL_BASE}{target_slug}.html":
+                return _hard_fail(markdown, article_slug, plan, "REGISTRY_TARGET_INELIGIBLE", "Batch target URL 不符合合同", target_slug)
+            if not file_exists(entry.markdown_path):
+                return _hard_fail(markdown, article_slug, plan, "BATCH_EXTENSION_TARGET_MISSING", "Batch target Markdown 不存在", target_slug)
+        else:
+            return _hard_fail(markdown, article_slug, plan, "TARGET_SOURCE_MISMATCH", "未知 target source", target_slug)
+        resolved_entries[target_slug] = entry
 
     try:
         scan = scan_markdown(markdown)
@@ -498,7 +564,7 @@ def inject_links(
         if len(body_slugs) >= body_target:
             remaining.append(target_slug)
             continue
-        entry = entries[target_slug]
+        entry = resolved_entries[target_slug]
         chosen: tuple[TokenSpan, AnchorSelection] | None = None
         ordered_spans = sorted(
             scan.plain_spans,
@@ -548,7 +614,7 @@ def inject_links(
     for target_slug in remaining:
         if target_slug in body_slugs:
             continue
-        entry = entries[target_slug]
+        entry = resolved_entries[target_slug]
         normalized = normalize_anchor(entry.title)
         if (
             len(related_slugs) < RELATED_MAX
@@ -587,7 +653,7 @@ def inject_links(
     if related_slugs:
         related_lines = ["## 相关阅读", ""]
         related_lines.extend(
-            f"- [{entries[slug].title}](./{slug}.html)"
+            f"- [{resolved_entries[slug].title}](./{slug}.html)"
             for slug in related_slugs
         )
         related_block = "\n".join(related_lines) + "\n\n"

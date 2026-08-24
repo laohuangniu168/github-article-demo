@@ -10,8 +10,15 @@ from pathlib import Path
 TOOLS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS_DIR))
 
-from internal_link_injector import inject_links, normalize_anchor, scan_markdown
-from internal_link_registry import RegistryEntry, RegistrySnapshot, compute_registry_version
+from internal_link_injector import (
+    BatchExtensionEntry,
+    BatchRegistryExtension,
+    compute_batch_extension_version,
+    inject_links,
+    normalize_anchor,
+    scan_markdown,
+)
+from internal_link_registry import CANONICAL_BASE, RegistryEntry, RegistrySnapshot, compute_registry_version
 from internal_link_selector import LinkSelectionPlan, SelectedTarget
 
 
@@ -78,6 +85,38 @@ def make_plan(registry: RegistrySnapshot, count: int = 30, source_slug: str = "n
     )
 
 
+def extension_entry(slug: str = "batch-target", **changes) -> BatchExtensionEntry:
+    values = dict(
+        slug=slug,
+        title="批次目标内容优化指南",
+        cluster="content-seo",
+        batch_id="batch-5",
+        markdown_path=f"articles/{slug}.md",
+        relative_url=f"./{slug}.html",
+        canonical_url=f"{CANONICAL_BASE}{slug}.html",
+        quality_status="PASS",
+        published=True,
+        eligible_as_target=True,
+    )
+    values.update(changes)
+    return BatchExtensionEntry(**values)
+
+
+def make_extension(entries: tuple[BatchExtensionEntry, ...] | None = None, **changes) -> BatchRegistryExtension:
+    entries = entries or (extension_entry(),)
+    values = dict(entries=entries, batch_id="batch-5", extension_version=compute_batch_extension_version(entries))
+    values.update(changes)
+    return BatchRegistryExtension(**values)
+
+
+def extension_plan(registry: RegistrySnapshot, *, mixed: bool = False, target_slug: str = "batch-target", source: str = "batch_registry_extension") -> LinkSelectionPlan:
+    selected = []
+    if mixed:
+        selected.append(SelectedTarget(registry.entries[0].slug, "content-seo", 60, ("same_cluster:+50",), "frozen_registry", False, 0, 1, "0" * 64))
+    selected.append(SelectedTarget(target_slug, "content-seo", 60, ("same_cluster:+50",), source, True, 0, 1, "1" * 64))
+    return replace(make_plan(registry, count=0), selected_targets=tuple(selected), internal_links=len(selected), same_batch_links=1)
+
+
 def article_text(
     registry: RegistrySnapshot,
     *,
@@ -122,6 +161,9 @@ class InternalLinkInjectorTests(unittest.TestCase):
             config_version=kwargs.get("config_version", "config-5"),
             batch_id=kwargs.get("batch_id", "batch-5"),
             protected_slugs=kwargs.get("protected_slugs", ()),
+            batch_extension=kwargs.get("batch_extension"),
+            extension_version=kwargs.get("extension_version"),
+            file_exists=kwargs.get("file_exists"),
         )
 
     def protected_fixture(self, fragment: str, target_text: str = "独特主题00"):
@@ -322,6 +364,93 @@ class InternalLinkInjectorTests(unittest.TestCase):
         outcome = self.inject(article_text(registry, paragraph_targets=0), registry=registry)
         self.assertEqual(outcome.result.final_status, "PASS_WITH_SHORTFALL")
         self.assertIn("INSUFFICIENT_SAFE_INJECTION_POINTS", outcome.result.warnings)
+
+    def extension_inject(self, *, extension=None, plan=None, registry=None, **kwargs):
+        registry = registry or make_registry()
+        extension = extension if extension is not None else make_extension()
+        plan = plan or extension_plan(registry)
+        return self.inject(
+            article_text(registry, paragraph_targets=0),
+            registry=registry,
+            plan=plan,
+            batch_extension=extension,
+            extension_version=kwargs.pop("extension_version", extension.extension_version if extension else None),
+            file_exists=kwargs.pop("file_exists", lambda _: True),
+            **kwargs,
+        )
+
+    def test_batch_extension_target_injects(self):
+        outcome = self.extension_inject()
+        self.assertNotEqual(outcome.result.final_status, "FAIL")
+        self.assertIn("./batch-target.html", outcome.markdown)
+
+    def test_frozen_and_batch_targets_inject(self):
+        registry = make_registry()
+        outcome = self.extension_inject(registry=registry, plan=extension_plan(registry, mixed=True))
+        self.assertEqual(outcome.result.requested_targets, 2)
+        self.assertIn("./target-00.html", outcome.markdown)
+        self.assertIn("./batch-target.html", outcome.markdown)
+
+    def test_extension_required(self):
+        registry = make_registry()
+        outcome = self.inject(article_text(registry), registry=registry, plan=extension_plan(registry))
+        self.assertEqual(outcome.result.events[0].code, "BATCH_EXTENSION_REQUIRED")
+
+    def test_extension_target_missing(self):
+        registry = make_registry()
+        empty = make_extension((extension_entry("other-target"),))
+        outcome = self.extension_inject(registry=registry, extension=empty, plan=extension_plan(registry))
+        self.assertEqual(outcome.result.events[0].code, "BATCH_EXTENSION_TARGET_MISSING")
+
+    def test_extension_version_mismatch(self):
+        outcome = self.extension_inject(extension_version="ilx1:wrong")
+        self.assertEqual(outcome.result.events[0].code, "BATCH_EXTENSION_VERSION_MISMATCH")
+
+    def test_extension_batch_id_mismatch(self):
+        extension = make_extension(batch_id="other-batch")
+        outcome = self.extension_inject(extension=extension)
+        self.assertEqual(outcome.result.events[0].code, "BATCH_ID_MISMATCH")
+
+    def test_extension_source_mismatch(self):
+        registry = make_registry()
+        plan = extension_plan(registry, source="frozen_registry")
+        outcome = self.extension_inject(registry=registry, plan=plan)
+        self.assertEqual(outcome.result.events[0].code, "TARGET_SOURCE_MISMATCH")
+
+    def test_frozen_source_mismatch(self):
+        registry = make_registry()
+        plan = extension_plan(registry, target_slug="target-00")
+        outcome = self.extension_inject(registry=registry, plan=plan)
+        self.assertEqual(outcome.result.events[0].code, "TARGET_SOURCE_MISMATCH")
+
+    def test_batch_quality_must_pass(self):
+        entry = extension_entry(quality_status="FAIL")
+        outcome = self.extension_inject(extension=make_extension((entry,)))
+        self.assertEqual(outcome.result.events[0].code, "BATCH_TARGET_QUALITY_NOT_PASS")
+
+    def test_batch_target_must_be_eligible(self):
+        entry = extension_entry(eligible_as_target=False)
+        outcome = self.extension_inject(extension=make_extension((entry,)))
+        self.assertEqual(outcome.result.events[0].code, "REGISTRY_TARGET_INELIGIBLE")
+
+    def test_batch_relative_url_must_be_standard(self):
+        entry = extension_entry(relative_url="../batch-target.html")
+        outcome = self.extension_inject(extension=make_extension((entry,)))
+        self.assertEqual(outcome.result.events[0].code, "REGISTRY_TARGET_INELIGIBLE")
+
+    def test_batch_markdown_must_exist(self):
+        outcome = self.extension_inject(file_exists=lambda _: False)
+        self.assertEqual(outcome.result.events[0].code, "BATCH_EXTENSION_TARGET_MISSING")
+
+    def test_extension_does_not_pollute_frozen_registry(self):
+        registry = make_registry()
+        before = registry.entries
+        self.extension_inject(registry=registry)
+        self.assertEqual(registry.entries, before)
+        self.assertNotIn("batch-target", {entry.slug for entry in registry.entries})
+
+    def test_extension_injection_is_deterministic(self):
+        self.assertEqual(self.extension_inject(), self.extension_inject())
 
 
 if __name__ == "__main__":

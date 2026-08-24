@@ -10,7 +10,7 @@ sys.path.insert(0, str(TOOLS))
 
 from article_spec import ArticleSpec
 from internal_link_audit import audit_article, audit_batch
-from internal_link_injector import InjectionResult
+from internal_link_injector import InjectionResult, Placement, SkippedTarget
 from internal_link_registry import RegistryEntry, RegistrySnapshot, compute_registry_version
 from internal_link_selector import LinkSelectionPlan, SelectedTarget
 
@@ -36,6 +36,31 @@ def markdown(r,count=20,related=8):
     paragraphs="\n\n".join(f"自然内容 [{r.entries[i].title}](./{r.entries[i].slug}.html)。" for i in range(body))
     rel="\n".join(f"- [{r.entries[i].title}](./{r.entries[i].slug}.html)" for i in range(body,count))
     return f'---\ntitle: "新文章"\n---\n\n# 新文章\n\n{{% raw %}}\n\n## 正文\n\n{paragraphs}\n\n## 相关阅读\n\n{rel}\n\n## 总结\n\n结束。\n\n{{% endraw %}}\n'
+
+
+def plain_markdown(extra=""):
+    return f'---\ntitle: "新文章"\n---\n\n# 新文章\n\n{{% raw %}}\n\n## 正文\n\n正文内容。{extra}\n\n## 总结\n\n结束。\n\n{{% endraw %}}\n'
+
+
+def injection_result(r, count, *, requested=None, safe_shortfall=False, warnings=None):
+    requested = count if requested is None else requested
+    body = max(0, count - min(8, count))
+    placements = tuple(
+        Placement(
+            r.entries[i].slug, r.entries[i].title, "title",
+            "body" if i < body else "related", "正文" if i < body else "相关阅读",
+            i, (0, 0), f"./{r.entries[i].slug}.html",
+        )
+        for i in range(count)
+    )
+    skipped = tuple(SkippedTarget(r.entries[i].slug, "NO_SAFE_INJECTION_POINT") for i in range(count, requested))
+    if warnings is None:
+        warnings = ("PLACEMENT_TARGET_NOT_MET", "INSUFFICIENT_SAFE_INJECTION_POINTS") if safe_shortfall else ()
+    return InjectionResult(
+        "new-content-article", "batch-6", r.registry_version, "v1.1-default-1",
+        requested, body, count - body, skipped, placements, tuple(warnings), (),
+        "PASS_WITH_SHORTFALL" if safe_shortfall else "PASS",
+    )
 
 
 class AuditTests(unittest.TestCase):
@@ -100,6 +125,96 @@ class AuditTests(unittest.TestCase):
     def test_38_deterministic(self): self.assertEqual(self.run_audit(),self.run_audit())
     def test_39_mutation_detection(self): self.assertEqual(self.run_audit(protected_hashes={"a":"1"},current_hashes={"a":"2"}).final_status,"FAIL")
     def test_40_frozen_hash_match(self): self.assertNotEqual(Path(__file__).read_bytes(),b"")
+
+    def test_41_safe_point_shortfall_from_injection_evidence(self):
+        r=registry(); p=plan(r,25); ir=injection_result(r,17,requested=25,safe_shortfall=True)
+        x=self.run_audit(markdown(r,17,8),r,p,injection_result=ir)
+        self.assertEqual((x.final_status,x.shortfall_reason),("PASS_WITH_SHORTFALL","INSUFFICIENT_SAFE_INJECTION_POINTS"))
+
+    def test_42_relevance_selection_shortfall(self):
+        r=registry(); p=plan(r,12,"INSUFFICIENT_RELEVANT_CANDIDATES")
+        self.assertEqual(self.run_audit(markdown(r,12,8),r,p,injection_result=injection_result(r,12)).shortfall_reason,"INSUFFICIENT_RELEVANT_CANDIDATES")
+
+    def test_43_inbound_selection_shortfall(self):
+        r=registry(); p=plan(r,12,"INBOUND_CAP_EXHAUSTED")
+        self.assertEqual(self.run_audit(markdown(r,12,8),r,p,injection_result=injection_result(r,12)).shortfall_reason,"INBOUND_CAP_EXHAUSTED")
+
+    def test_44_fake_safe_point_evidence_fails(self):
+        r=registry(); p=plan(r,25); ir=injection_result(r,17,requested=25,safe_shortfall=True)
+        ir=replace(ir,skipped_targets=())
+        self.assertEqual(self.run_audit(markdown(r,17,8),r,p,injection_result=ir).final_status,"FAIL")
+
+    def test_45_illegal_injection_warning_fails(self):
+        r=registry(); p=plan(r,25); ir=injection_result(r,17,requested=25,safe_shortfall=True,warnings=("MADE_UP_REASON",))
+        self.assertEqual(self.run_audit(markdown(r,17,8),r,p,injection_result=ir).final_status,"FAIL")
+
+    def test_46_actual_at_least_minimum_ignores_shortfall_warning(self):
+        r=registry(); ir=injection_result(r,20,requested=25,safe_shortfall=True)
+        x=self.run_audit(markdown(r,20,8),r,plan(r,25),injection_result=ir)
+        self.assertEqual((x.final_status,x.shortfall_reason),("PASS",None))
+
+    def provenance_case(self, baseline, final, count=20, ir=None):
+        r=registry(); ir=ir or injection_result(r,count)
+        return self.run_audit(final,r,plan(r,count),injection_result=ir,pre_injection_markdown=baseline)
+
+    def test_47_pre_existing_root_and_external_links_preserved(self):
+        r=registry(); baseline=plain_markdown(" [旧站内](/legacy/) 与 [外部](https://example.com/x)")
+        final=markdown(r,20,8).replace("## 正文", "## 正文\n\n正文内容 [旧站内](/legacy/) 与 [外部](https://example.com/x)")
+        x=self.provenance_case(baseline,final)
+        self.assertEqual((x.final_status,x.pre_existing_links,x.invalid_targets),("PASS",2,0))
+
+    def test_48_pre_existing_link_mutation_fails(self):
+        r=registry(); baseline=plain_markdown(" [旧站内](/legacy/)")
+        final=markdown(r,20,8).replace("## 正文","## 正文\n\n正文内容 [旧站内](/changed/)")
+        self.assertEqual(self.provenance_case(baseline,final).final_status,"FAIL")
+
+    def test_49_new_root_or_external_link_fails(self):
+        r=registry(); baseline=plain_markdown(); ir=injection_result(r,20)
+        for url in ("/new-root/","https://example.com/new"):
+            final=markdown(r,20,8).replace("## 正文",f"## 正文\n\n[新链接]({url})")
+            bad=replace(ir,placements=ir.placements+(Placement("new-link","新链接","title","body","正文",99,(0,0),url),),body_links=ir.body_links+1,requested_targets=ir.requested_targets+1)
+            self.assertEqual(self.provenance_case(baseline,final,20,bad).final_status,"FAIL")
+
+    def test_50_new_strict_link_outside_registry_fails(self):
+        r=registry(); baseline=plain_markdown(); url="./unknown-target.html"
+        final=markdown(r,20,8).replace("## 正文",f"## 正文\n\n[未知目标]({url})")
+        ir=injection_result(r,20); bad=replace(ir,placements=ir.placements+(Placement("unknown-target","未知目标","title","body","正文",99,(0,0),url),),body_links=ir.body_links+1,requested_targets=21)
+        self.assertEqual(self.provenance_case(baseline,final,20,bad).final_status,"FAIL")
+
+    def test_51_new_valid_strict_link_with_placement_passes(self):
+        r=registry(); baseline=plain_markdown(); final=markdown(r,20,8)
+        x=self.provenance_case(baseline,final,20,injection_result(r,20))
+        self.assertEqual((x.final_status,x.internal_links,x.pre_existing_links),("PASS",20,0))
+
+    def test_52_nested_link_attack_fails(self):
+        r=registry(); baseline=plain_markdown(); final=markdown(r,20,8).replace("## 正文","## 正文\n\n[外层 [内层](./target-00.html)](./target-01.html)")
+        self.assertEqual(self.provenance_case(baseline,final).final_status,"FAIL")
+
+    def test_53_missing_injected_link_fails(self):
+        r=registry(); baseline=plain_markdown(); final=markdown(r,19,8)
+        self.assertEqual(self.provenance_case(baseline,final,20,injection_result(r,20)).final_status,"FAIL")
+
+    def test_54_duplicate_injected_target_mixed_with_pre_existing(self):
+        r=registry(); baseline=plain_markdown(" [旧链接](./target-19.html)")
+        final=markdown(r,20,8).replace("## 正文","## 正文\n\n正文内容 [旧链接](./target-19.html)")
+        x=self.provenance_case(baseline,final,20,injection_result(r,20))
+        self.assertEqual((x.final_status,x.internal_links,x.pre_existing_links),("PASS",20,1))
+
+    def test_55_gate7_failure_site_minimal_read_only_reproduction(self):
+        r=registry(); invalid_shortfall=invalid_url=0
+        for count in (10,12,14,16,17,19):
+            p=plan(r,24); ir=injection_result(r,count,requested=24,safe_shortfall=True)
+            result=self.run_audit(markdown(r,count,min(8,count)),r,p,injection_result=ir)
+            self.assertEqual(result.final_status,"PASS_WITH_SHORTFALL")
+            invalid_shortfall += sum(e.code == "INVALID_SHORTFALL_REASON" for e in result.events)
+        baseline=plain_markdown(" [Canonical 标签](/canonical-guide/)")
+        final=markdown(r,20,8).replace("## 正文","## 正文\n\n[Canonical 标签](/canonical-guide/)")
+        canonical=self.provenance_case(baseline,final,20,injection_result(r,20))
+        invalid_url += sum(e.code == "INVALID_INTERNAL_URL" for e in canonical.events)
+        self.assertEqual((canonical.final_status,canonical.pre_existing_links),("PASS",1))
+        self.assertIn("[Canonical 标签](/canonical-guide/)",baseline)
+        self.assertIn("[Canonical 标签](/canonical-guide/)",final)
+        self.assertEqual((invalid_shortfall,invalid_url),(0,0))
 
 
 if __name__ == "__main__": unittest.main()

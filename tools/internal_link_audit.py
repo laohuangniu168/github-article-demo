@@ -71,6 +71,7 @@ class InternalLinkAuditResult:
     html_comment_injections: int
     malformed_markdown_links: int
     anchor_duplicates: int
+    pre_existing_links: int
     cluster_distribution: Mapping[str, object]
     shortfall_reason: str | None
     warnings: tuple[str, ...]
@@ -216,6 +217,7 @@ def audit_article(
     file_exists: Callable[[str], bool] | None = None,
     protected_hashes: Mapping[str, str] | None = None,
     current_hashes: Mapping[str, str] | None = None,
+    pre_injection_markdown: str | None = None,
 ) -> InternalLinkAuditResult:
     events: list[AuditEvent] = []
     warnings: list[str] = []
@@ -235,6 +237,17 @@ def audit_article(
     if injection_result is not None: configs.append(injection_result.config_version)
     if len(set(configs)) != 1: fail("CONFIG_VERSION_MISMATCH")
     if plan.source_slug != source.slug or plan.batch_id != batch_id: fail("SOURCE_OR_BATCH_MISMATCH")
+    if injection_result is not None:
+        if injection_result.article_slug != source.slug or injection_result.batch_id != batch_id:
+            fail("INJECTION_RESULT_IDENTITY_MISMATCH")
+        placement_body = sum(p.placement_type == "body" for p in injection_result.placements)
+        placement_related = sum(p.placement_type == "related" for p in injection_result.placements)
+        if (
+            placement_body + placement_related != len(injection_result.placements)
+            or placement_body != injection_result.body_links
+            or placement_related != injection_result.related_links
+        ):
+            fail("INJECTION_RESULT_COUNT_MISMATCH")
     if protected_hashes is not None and current_hashes is not None and dict(protected_hashes) != dict(current_hashes):
         fail("EXISTING_PRODUCTION_MUTATION_ATTEMPT")
 
@@ -245,14 +258,37 @@ def audit_article(
     malformed += len(related_errors)
     if malformed: fail("MALFORMED_MARKDOWN_LINK")
 
+    pre_existing_links = 0
+    baseline_remaining: Counter[tuple[str, str]] = Counter()
+    placement_remaining: Counter[tuple[str, str]] = Counter()
+    if pre_injection_markdown is not None:
+        baseline_links, baseline_malformed, baseline_related_errors, _ = _scan_markdown(pre_injection_markdown)
+        if baseline_malformed or baseline_related_errors:
+            fail("BASELINE_MARKDOWN_INVALID")
+        baseline_remaining.update((link.anchor, link.url) for link in baseline_links)
+        if injection_result is None:
+            fail("INJECTION_PROVENANCE_MISSING")
+        else:
+            placement_remaining.update((placement.anchor_text, placement.written_link) for placement in injection_result.placements)
+
     targets: list[str] = []
     body = related_count = same_batch = self_links = broken = invalid = out = 0
     protected_counts = Counter()
     anchors: list[str] = []
     cluster_counts = Counter()
     for link in links:
+        provenance_key = (link.anchor, link.url)
+        if baseline_remaining[provenance_key] > 0:
+            baseline_remaining[provenance_key] -= 1
+            pre_existing_links += 1
+            continue
+        if pre_injection_markdown is not None:
+            if placement_remaining[provenance_key] <= 0:
+                fail("INJECTION_PROVENANCE_MISSING", message=link.url)
+            else:
+                placement_remaining[provenance_key] -= 1
         looks_internal = ".html" in link.url or link.url.startswith(("./", "../", "/"))
-        if not looks_internal:
+        if not looks_internal and pre_injection_markdown is None:
             continue
         match = STRICT_INTERNAL_URL.fullmatch(link.url)
         if not match:
@@ -296,6 +332,11 @@ def audit_article(
         if score < MIN_RELEVANCE_SCORE: fail("RELEVANCE_BELOW_THRESHOLD", slug)
         cluster_counts[cluster] += 1
 
+    if any(baseline_remaining.values()):
+        fail("PRE_EXISTING_LINK_MUTATED")
+    if any(placement_remaining.values()):
+        fail("INJECTED_LINK_MISSING_FROM_FINAL")
+
     duplicates = sum(count - 1 for count in Counter(targets).values() if count > 1)
     if duplicates: fail("DUPLICATE_TARGET_REJECTED")
     normalized = [a for a in anchors if a]
@@ -307,9 +348,27 @@ def audit_article(
     if total > configured_max: fail("CONFIGURED_MAX_EXCEEDED")
     if same_batch * 100 > total * SAME_BATCH_MAX_PERCENT: fail("SAME_BATCH_CAP_EXCEEDED")
     if 24 <= total <= 30 and related_count < 8: warnings.append("PLACEMENT_TARGET_NOT_MET")
-    reason = plan.shortfall_reason
-    if total < 20 and reason not in ALLOWED_SHORTFALL_REASONS:
-        fail("INVALID_SHORTFALL_REASON")
+    reason = None
+    if total < 20:
+        injection_safe_shortfall = False
+        if injection_result is not None:
+            allowed_injection_warnings = {"PLACEMENT_TARGET_NOT_MET", "INSUFFICIENT_SAFE_INJECTION_POINTS"}
+            if any(warning not in allowed_injection_warnings for warning in injection_result.warnings):
+                fail("INVALID_SHORTFALL_REASON")
+            injection_safe_shortfall = (
+                injection_result.final_status == "PASS_WITH_SHORTFALL"
+                and "INSUFFICIENT_SAFE_INJECTION_POINTS" in injection_result.warnings
+                and injection_result.requested_targets > total
+                and len(injection_result.placements) == total
+                and len(injection_result.skipped_targets) == injection_result.requested_targets - total
+                and all(skipped.reason == "NO_SAFE_INJECTION_POINT" for skipped in injection_result.skipped_targets)
+            )
+        if injection_safe_shortfall:
+            reason = "INSUFFICIENT_SAFE_INJECTION_POINTS"
+        elif plan.internal_links < 20 and total == plan.internal_links and plan.shortfall_reason in ALLOWED_SHORTFALL_REASONS:
+            reason = plan.shortfall_reason
+        else:
+            fail("INVALID_SHORTFALL_REASON")
     if hard_fail: status = "FAIL"
     elif total < 20: status = "PASS_WITH_SHORTFALL"
     else: status = "PASS"
@@ -319,7 +378,7 @@ def audit_article(
         broken, invalid, out, protected_counts["code_block_injections"], protected_counts["front_matter_injections"],
         protected_counts["inline_code_injections"], protected_counts["liquid_injections"],
         protected_counts["html_attribute_injections"], protected_counts["html_comment_injections"], malformed,
-        anchor_duplicates, {"same_cluster": same_cluster, "cross_cluster": total - same_cluster,
+        anchor_duplicates, pre_existing_links, {"same_cluster": same_cluster, "cross_cluster": total - same_cluster,
         "unclassified": cluster_counts.get("unclassified", 0), "per_cluster_counts": dict(sorted(cluster_counts.items()))},
         reason, tuple(warnings), registry_version, config_version, tuple(events), status,
     )

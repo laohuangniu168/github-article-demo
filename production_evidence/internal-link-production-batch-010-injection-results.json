@@ -1,0 +1,2499 @@
+{
+  "batch_id": "internal-link-production-batch-010",
+  "config_version": "v1.1-default-1",
+  "evidence_type": "production_injection_results",
+  "extension_version": "ilx1:c69ef3c60229d142601a490153487d1678d8f8ce2d398172d41140140fb2aebb",
+  "records": [
+    {
+      "article_slug": "baidu-crawl-host-load-correlation",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 4,
+      "config_version": "v1.1-default-1",
+      "events": [],
+      "final_status": "PASS",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "抓取",
+          "h2_section": "抓取频率为什么会影响主机负载",
+          "paragraph_index": 0,
+          "placement_type": "body",
+          "source_span": [
+            199,
+            201
+          ],
+          "target_slug": "baidu-crawl-response-time",
+          "written_link": "./baidu-crawl-response-time.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "蜘蛛",
+          "h2_section": "同时采集蜘蛛日志与主机指标",
+          "paragraph_index": 5,
+          "placement_type": "body",
+          "source_span": [
+            675,
+            677
+          ],
+          "target_slug": "baidu-crawl-status-code-analysis",
+          "written_link": "./baidu-crawl-status-code-analysis.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "问题",
+          "h2_section": "如何判断二者是否真正相关",
+          "paragraph_index": 20,
+          "placement_type": "body",
+          "source_span": [
+            2147,
+            2149
+          ],
+          "target_slug": "baidu-crawl-error-analysis",
+          "written_link": "./baidu-crawl-error-analysis.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "日志分析",
+          "h2_section": "同时采集蜘蛛日志与主机指标",
+          "paragraph_index": 7,
+          "placement_type": "body",
+          "source_span": [
+            916,
+            920
+          ],
+          "target_slug": "baidu-crawler-identification",
+          "written_link": "./baidu-crawler-identification.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛抓取频率优化实战方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-frequency-optimization",
+          "written_link": "./baidu-crawl-frequency-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛重点页面抓取引导方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-priority-pages",
+          "written_link": "./baidu-crawl-priority-pages.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛深层页面抓取优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-deep-page-crawling",
+          "written_link": "./baidu-deep-page-crawling.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛抓取深度分析实战方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-depth-analysis",
+          "written_link": "./baidu-crawl-depth-analysis.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛抓取路径分析与优化指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-path-analysis",
+          "written_link": "./baidu-crawl-path-analysis.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛抓取频率监控实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-rate-monitoring",
+          "written_link": "./baidu-crawl-rate-monitoring.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度SEO抓取资源优化实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-budget-guide",
+          "written_link": "./baidu-crawl-budget-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛参数URL抓取优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-parameter-urls",
+          "written_link": "./baidu-crawl-parameter-urls.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛服务器日志分析完整指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-log-analysis",
+          "written_link": "./baidu-crawl-log-analysis.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度蜘蛛低价值页面抓取控制方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-crawl-low-value-pages",
+          "written_link": "./baidu-crawl-low-value-pages.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 10,
+      "requested_targets": 14,
+      "skipped_targets": [],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET"
+      ]
+    },
+    {
+      "article_slug": "baidu-indexing-content-revision-signal",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 9,
+      "config_version": "v1.1-default-1",
+      "events": [],
+      "final_status": "PASS",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内容",
+          "h2_section": "先区分“重抓取、更新索引和排名变化”",
+          "paragraph_index": 1,
+          "placement_type": "body",
+          "source_span": [
+            257,
+            259
+          ],
+          "target_slug": "baidu-indexing-content-update",
+          "written_link": "./baidu-indexing-content-update.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "收录",
+          "h2_section": "用站点地图和内链传递更新时间",
+          "paragraph_index": 18,
+          "placement_type": "body",
+          "source_span": [
+            1725,
+            1727
+          ],
+          "target_slug": "baidu-indexing-status-analysis",
+          "written_link": "./baidu-indexing-status-analysis.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "响应时间",
+          "h2_section": "通过服务器日志确认是否重新抓取",
+          "paragraph_index": 21,
+          "placement_type": "body",
+          "source_span": [
+            1978,
+            1982
+          ],
+          "target_slug": "baidu-new-site-indexing",
+          "written_link": "./baidu-new-site-indexing.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "规范化",
+          "h2_section": "观察重新收录不能只依赖一个指标",
+          "paragraph_index": 32,
+          "placement_type": "body",
+          "source_span": [
+            2801,
+            2804
+          ],
+          "target_slug": "baidu-indexing-url-normalization",
+          "written_link": "./baidu-indexing-url-normalization.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "速度",
+          "h2_section": "观察重新收录不能只依赖一个指标",
+          "paragraph_index": 35,
+          "placement_type": "body",
+          "source_span": [
+            3151,
+            3153
+          ],
+          "target_slug": "baidu-indexing-speed-guide",
+          "written_link": "./baidu-indexing-speed-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "问题",
+          "h2_section": "百度可能识别到哪些内容修订信号",
+          "paragraph_index": 6,
+          "placement_type": "body",
+          "source_span": [
+            591,
+            593
+          ],
+          "target_slug": "baidu-indexing-diagnosis-guide",
+          "written_link": "./baidu-indexing-diagnosis-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内链",
+          "h2_section": "常见误判与更稳妥的测试方法",
+          "paragraph_index": 36,
+          "placement_type": "body",
+          "source_span": [
+            3210,
+            3212
+          ],
+          "target_slug": "baidu-indexing-internal-links",
+          "written_link": "./baidu-indexing-internal-links.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "异常",
+          "h2_section": "百度可能识别到哪些内容修订信号",
+          "paragraph_index": 13,
+          "placement_type": "body",
+          "source_span": [
+            1121,
+            1123
+          ],
+          "target_slug": "baidu-indexing-redirect-issues",
+          "written_link": "./baidu-indexing-redirect-issues.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "Sitemap",
+          "h2_section": "用站点地图和内链传递更新时间",
+          "paragraph_index": 14,
+          "placement_type": "body",
+          "source_span": [
+            1270,
+            1277
+          ],
+          "target_slug": "baidu-indexing-sitemap-strategy",
+          "written_link": "./baidu-indexing-sitemap-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "页面质量对百度收录的影响与优化",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-indexing-page-quality",
+          "written_link": "./baidu-indexing-page-quality.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "服务器稳定性对百度收录的影响",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-indexing-server-stability",
+          "written_link": "./baidu-indexing-server-stability.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度网站收录优化实战方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-website-indexing",
+          "written_link": "./baidu-website-indexing.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "Canonical配置对百度收录的影响",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-indexing-canonical-issues",
+          "written_link": "./baidu-indexing-canonical-issues.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度网站收录下降原因分析与恢复方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-indexing-drop-recovery",
+          "written_link": "./baidu-indexing-drop-recovery.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "提高百度发现新URL效率的方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-indexing-url-discovery",
+          "written_link": "./baidu-indexing-url-discovery.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 6,
+      "requested_targets": 15,
+      "skipped_targets": [],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET"
+      ]
+    },
+    {
+      "article_slug": "baidu-seo-ranking-drop-triage",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 9,
+      "config_version": "v1.1-default-1",
+      "events": [],
+      "final_status": "PASS",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "文章",
+          "h2_section": null,
+          "paragraph_index": 0,
+          "placement_type": "body",
+          "source_span": [
+            209,
+            211
+          ],
+          "target_slug": "baidu-seo-duplicate-content",
+          "written_link": "./baidu-seo-duplicate-content.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "收录",
+          "h2_section": "第一层：确认排名是否真的下降",
+          "paragraph_index": 3,
+          "placement_type": "body",
+          "source_span": [
+            442,
+            444
+          ],
+          "target_slug": "baidu-seo-indexing-problems",
+          "written_link": "./baidu-seo-indexing-problems.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "关键词",
+          "h2_section": "第二层：按影响范围判断问题类型",
+          "paragraph_index": 8,
+          "placement_type": "body",
+          "source_span": [
+            841,
+            844
+          ],
+          "target_slug": "baidu-seo-keyword-layout",
+          "written_link": "./baidu-seo-keyword-layout.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "长尾词",
+          "h2_section": "第一层：确认排名是否真的下降",
+          "paragraph_index": 4,
+          "placement_type": "body",
+          "source_span": [
+            473,
+            476
+          ],
+          "target_slug": "baidu-seo-ranking-factors",
+          "written_link": "./baidu-seo-ranking-factors.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内容",
+          "h2_section": "第三层：检查抓取、访问与索引链路",
+          "paragraph_index": 15,
+          "placement_type": "body",
+          "source_span": [
+            1378,
+            1380
+          ],
+          "target_slug": "baidu-seo-content-quality",
+          "written_link": "./baidu-seo-content-quality.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内链",
+          "h2_section": "第六层：按优先级修复并观察结果",
+          "paragraph_index": 38,
+          "placement_type": "body",
+          "source_span": [
+            3117,
+            3119
+          ],
+          "target_slug": "baidu-seo-anchor-text",
+          "written_link": "./baidu-seo-anchor-text.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "结构",
+          "h2_section": "第五层：排查站点质量与异常风险",
+          "paragraph_index": 36,
+          "placement_type": "body",
+          "source_span": [
+            3001,
+            3003
+          ],
+          "target_slug": "baidu-seo-site-architecture",
+          "written_link": "./baidu-seo-site-architecture.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "层级",
+          "h2_section": "第二层：按影响范围判断问题类型",
+          "paragraph_index": 13,
+          "placement_type": "body",
+          "source_span": [
+            1214,
+            1216
+          ],
+          "target_slug": "baidu-seo-website-structure",
+          "written_link": "./baidu-seo-website-structure.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "抓取",
+          "h2_section": "第三层：检查抓取、访问与索引链路",
+          "paragraph_index": 19,
+          "placement_type": "body",
+          "source_span": [
+            1644,
+            1646
+          ],
+          "target_slug": "baidu-seo-crawl-optimization",
+          "written_link": "./baidu-seo-crawl-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度SEO长尾关键词挖掘与布局方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-long-tail-keywords",
+          "written_link": "./baidu-long-tail-keywords.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度SEO页面优化实战方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-seo-page-optimization",
+          "written_link": "./baidu-seo-page-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度SEO网站地图优化完整教程",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-seo-site-map-guide",
+          "written_link": "./baidu-seo-site-map-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度SEO网站内容更新策略",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-seo-content-update",
+          "written_link": "./baidu-seo-content-update.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度SEO网站死链检测与处理方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-dead-link-optimization",
+          "written_link": "./baidu-dead-link-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "百度搜索资源平台SEO使用指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "baidu-search-resource-platform-guide",
+          "written_link": "./baidu-search-resource-platform-guide.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 6,
+      "requested_targets": 15,
+      "skipped_targets": [],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET"
+      ]
+    },
+    {
+      "article_slug": "content-seo-expert-review-checklist",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 4,
+      "config_version": "v1.1-default-1",
+      "events": [
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-duplication-check"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-hierarchy-guide"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-hub-guide"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-data-driven"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-gap-analysis"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-pruning-guide"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-repurpose-strategy"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-introduction-writing"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-examples-guide"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-table-optimization"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-formatting-guide"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-conclusion-writing"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-list-optimization"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-source-quality"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-freshness-signals"
+        },
+        {
+          "article_slug": "content-seo-expert-review-checklist",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-content-performance-analysis"
+        }
+      ],
+      "final_status": "PASS_WITH_SHORTFALL",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内容",
+          "h2_section": null,
+          "paragraph_index": 0,
+          "placement_type": "body",
+          "source_span": [
+            142,
+            144
+          ],
+          "target_slug": "seo-content-conversion-guide",
+          "written_link": "./seo-content-conversion-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "文章",
+          "h2_section": "建立分级评分和发布门槛",
+          "paragraph_index": 25,
+          "placement_type": "body",
+          "source_span": [
+            2651,
+            2653
+          ],
+          "target_slug": "seo-content-search-intent",
+          "written_link": "./seo-content-search-intent.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "结构",
+          "h2_section": "先明确复核清单的使用场景",
+          "paragraph_index": 3,
+          "placement_type": "body",
+          "source_span": [
+            533,
+            535
+          ],
+          "target_slug": "seo-heading-structure",
+          "written_link": "./seo-heading-structure.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "层级",
+          "h2_section": "加入页面与技术 SEO 检查",
+          "paragraph_index": 20,
+          "placement_type": "body",
+          "source_span": [
+            2038,
+            2040
+          ],
+          "target_slug": "seo-content-structure",
+          "written_link": "./seo-content-structure.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO内容资产盘点与分类方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-inventory-guide",
+          "written_link": "./seo-content-inventory-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "旧文章SEO内容更新与排名维护方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-refresh-strategy",
+          "written_link": "./seo-content-refresh-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO文章内容优化完整方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-optimization",
+          "written_link": "./seo-content-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "常青SEO内容规划与维护方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-evergreen-guide",
+          "written_link": "./seo-content-evergreen-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO文章FAQ内容规划与优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-faq-strategy",
+          "written_link": "./seo-content-faq-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO主题权威内容体系建设方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-topic-authority",
+          "written_link": "./seo-content-topic-authority.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO内容衰退分析与恢复方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-decay-recovery",
+          "written_link": "./seo-content-decay-recovery.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO文章可读性优化完整指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-readability-guide",
+          "written_link": "./seo-content-readability-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO内容专业性与可信度提升方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-expertise-guide",
+          "written_link": "./seo-content-expertise-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO文章内容大纲规划方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-content-outline-guide",
+          "written_link": "./seo-content-outline-guide.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 10,
+      "requested_targets": 30,
+      "skipped_targets": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-duplication-check"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-hierarchy-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-hub-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-data-driven"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-gap-analysis"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-pruning-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-repurpose-strategy"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-introduction-writing"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-examples-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-table-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-formatting-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-conclusion-writing"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-list-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-source-quality"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-freshness-signals"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-performance-analysis"
+        }
+      ],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET",
+        "INSUFFICIENT_SAFE_INJECTION_POINTS"
+      ]
+    },
+    {
+      "article_slug": "internal-link-anchor-context-window",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 4,
+      "config_version": "v1.1-default-1",
+      "events": [],
+      "final_status": "PASS",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "解决",
+          "h2_section": "什么是锚文本上下文窗口",
+          "paragraph_index": 3,
+          "placement_type": "body",
+          "source_span": [
+            353,
+            355
+          ],
+          "target_slug": "seo-orphan-page-fix",
+          "written_link": "./seo-orphan-page-fix.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "锚文本",
+          "h2_section": "如何确定评估窗口的范围",
+          "paragraph_index": 7,
+          "placement_type": "body",
+          "source_span": [
+            572,
+            575
+          ],
+          "target_slug": "seo-internal-link-audit",
+          "written_link": "./seo-internal-link-audit.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内链",
+          "h2_section": "批量提取与审计流程",
+          "paragraph_index": 31,
+          "placement_type": "body",
+          "source_span": [
+            2642,
+            2644
+          ],
+          "target_slug": "internal-link-inbound-decay-monitoring",
+          "written_link": "./internal-link-inbound-decay-monitoring.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内容",
+          "h2_section": "建立可执行的评分维度",
+          "paragraph_index": 17,
+          "placement_type": "body",
+          "source_span": [
+            1178,
+            1180
+          ],
+          "target_slug": "seo-related-content-links",
+          "written_link": "./seo-related-content-links.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站内链分布与权重传递优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-internal-link-distribution",
+          "written_link": "./seo-internal-link-distribution.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO内链锚文本规划实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-internal-link-anchor-strategy",
+          "written_link": "./seo-internal-link-anchor-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站失效内链检测与修复指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-broken-internal-links",
+          "written_link": "./seo-broken-internal-links.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO网站内链优化与布局实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-internal-link-strategy",
+          "written_link": "./seo-internal-link-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "正文上下文内链SEO优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-contextual-internal-links",
+          "written_link": "./seo-contextual-internal-links.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 5,
+      "requested_targets": 9,
+      "skipped_targets": [],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET"
+      ]
+    },
+    {
+      "article_slug": "internal-link-inbound-decay-monitoring",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 4,
+      "config_version": "v1.1-default-1",
+      "events": [],
+      "final_status": "PASS",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "孤立页面",
+          "h2_section": "修复与持续监控策略",
+          "paragraph_index": 29,
+          "placement_type": "body",
+          "source_span": [
+            2993,
+            2997
+          ],
+          "target_slug": "seo-orphan-page-fix",
+          "written_link": "./seo-orphan-page-fix.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内链",
+          "h2_section": "什么是内链入链价值衰减",
+          "paragraph_index": 0,
+          "placement_type": "body",
+          "source_span": [
+            152,
+            154
+          ],
+          "target_slug": "internal-link-anchor-context-window",
+          "written_link": "./internal-link-anchor-context-window.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "锚文本",
+          "h2_section": "建立可比较的内链快照",
+          "paragraph_index": 4,
+          "placement_type": "body",
+          "source_span": [
+            754,
+            757
+          ],
+          "target_slug": "seo-internal-link-strategy",
+          "written_link": "./seo-internal-link-strategy.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "文章",
+          "h2_section": "用代理指标计算入链价值",
+          "paragraph_index": 13,
+          "placement_type": "body",
+          "source_span": [
+            1925,
+            1927
+          ],
+          "target_slug": "seo-related-content-links",
+          "written_link": "./seo-related-content-links.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站内链分布与权重传递优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-internal-link-distribution",
+          "written_link": "./seo-internal-link-distribution.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "正文上下文内链SEO优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-contextual-internal-links",
+          "written_link": "./seo-contextual-internal-links.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站内链审计完整流程与方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-internal-link-audit",
+          "written_link": "./seo-internal-link-audit.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站失效内链检测与修复指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-broken-internal-links",
+          "written_link": "./seo-broken-internal-links.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO内链锚文本规划实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-internal-link-anchor-strategy",
+          "written_link": "./seo-internal-link-anchor-strategy.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 5,
+      "requested_targets": 9,
+      "skipped_targets": [],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET"
+      ]
+    },
+    {
+      "article_slug": "keyword-research-intent-conflict-resolution",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 4,
+      "config_version": "v1.1-default-1",
+      "events": [
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-topic-cluster-keywords"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-regional-strategy"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-ranking-opportunity"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-business-value"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-ranking-tracking"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-priority-model"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-expansion-methods"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-funnel-mapping"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-seasonality"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-clustering-guide"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-long-tail-strategy"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-gap-competitors"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-semantic-analysis"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-performance-review"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-intent-analysis"
+        },
+        {
+          "article_slug": "keyword-research-intent-conflict-resolution",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-keyword-competition-analysis"
+        }
+      ],
+      "final_status": "PASS_WITH_SHORTFALL",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "关键词",
+          "h2_section": "什么是关键词搜索意图冲突",
+          "paragraph_index": 0,
+          "placement_type": "body",
+          "source_span": [
+            152,
+            155
+          ],
+          "target_slug": "seo-keyword-mapping-guide",
+          "written_link": "./seo-keyword-mapping-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内容",
+          "h2_section": "先用 SERP 判断主导搜索意图",
+          "paragraph_index": 7,
+          "placement_type": "body",
+          "source_span": [
+            660,
+            662
+          ],
+          "target_slug": "seo-keyword-content-calendar",
+          "written_link": "./seo-keyword-content-calendar.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "文章",
+          "h2_section": "用站内数据定位冲突页面",
+          "paragraph_index": 17,
+          "placement_type": "body",
+          "source_span": [
+            1475,
+            1477
+          ],
+          "target_slug": "seo-informational-keywords",
+          "written_link": "./seo-informational-keywords.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "解决",
+          "h2_section": "重写页面定位与内部链接",
+          "paragraph_index": 31,
+          "placement_type": "body",
+          "source_span": [
+            2545,
+            2547
+          ],
+          "target_slug": "seo-keyword-cannibalization",
+          "written_link": "./seo-keyword-cannibalization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO关键词目标页面选择方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-page-targeting",
+          "written_link": "./seo-keyword-page-targeting.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO商业关键词挖掘与布局策略",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-commercial-keyword-strategy",
+          "written_link": "./seo-commercial-keyword-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO关键词研究完整流程与实战方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-research-process",
+          "written_link": "./seo-keyword-research-process.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO问答型关键词挖掘方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-question-mining",
+          "written_link": "./seo-keyword-question-mining.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO关键词修饰词扩展策略",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-modifier-strategy",
+          "written_link": "./seo-keyword-modifier-strategy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO关键词重叠与页面冲突分析方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-overlap-analysis",
+          "written_link": "./seo-keyword-overlap-analysis.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO关键词转化意图分析方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-conversion-intent",
+          "written_link": "./seo-keyword-conversion-intent.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO关键词密度与自然布局方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-density-guide",
+          "written_link": "./seo-keyword-density-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站核心关键词选择与布局方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-core-keyword-selection",
+          "written_link": "./seo-core-keyword-selection.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站关键词覆盖率分析实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-keyword-coverage-analysis",
+          "written_link": "./seo-keyword-coverage-analysis.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 10,
+      "requested_targets": 30,
+      "skipped_targets": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-topic-cluster-keywords"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-regional-strategy"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-ranking-opportunity"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-business-value"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-ranking-tracking"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-priority-model"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-expansion-methods"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-funnel-mapping"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-seasonality"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-clustering-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-long-tail-strategy"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-gap-competitors"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-semantic-analysis"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-performance-review"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-intent-analysis"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-competition-analysis"
+        }
+      ],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET",
+        "INSUFFICIENT_SAFE_INJECTION_POINTS"
+      ]
+    },
+    {
+      "article_slug": "site-architecture-directory-depth-budget",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 7,
+      "config_version": "v1.1-default-1",
+      "events": [
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-date-archive-pages"
+        },
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-archive-page-optimization"
+        },
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-category-page-optimization"
+        },
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-search-result-pages"
+        },
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-breadcrumb-navigation"
+        },
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-tag-page-optimization"
+        },
+        {
+          "article_slug": "site-architecture-directory-depth-budget",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-sitewide-links-guide"
+        }
+      ],
+      "final_status": "PASS_WITH_SHORTFALL",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "层级",
+          "h2_section": "先明确“目录层级深度”指什么",
+          "paragraph_index": 1,
+          "placement_type": "body",
+          "source_span": [
+            309,
+            311
+          ],
+          "target_slug": "seo-navigation-optimization",
+          "written_link": "./seo-navigation-optimization.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "结构",
+          "h2_section": "建立预算前需要收集的数据",
+          "paragraph_index": 6,
+          "placement_type": "body",
+          "source_span": [
+            693,
+            695
+          ],
+          "target_slug": "seo-url-hierarchy-guide",
+          "written_link": "./seo-url-hierarchy-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "架构",
+          "h2_section": "把预算落实到 URL 与内链模板",
+          "paragraph_index": 20,
+          "placement_type": "body",
+          "source_span": [
+            2015,
+            2017
+          ],
+          "target_slug": "seo-silo-structure-guide",
+          "written_link": "./seo-silo-structure-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "文章",
+          "h2_section": "用页面等级制定深度预算",
+          "paragraph_index": 12,
+          "placement_type": "body",
+          "source_span": [
+            1445,
+            1447
+          ],
+          "target_slug": "seo-hub-spoke-structure",
+          "written_link": "./seo-hub-spoke-structure.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "导航",
+          "h2_section": "上线后如何检查和调整",
+          "paragraph_index": 36,
+          "placement_type": "body",
+          "source_span": [
+            3420,
+            3422
+          ],
+          "target_slug": "seo-faceted-navigation-guide",
+          "written_link": "./seo-faceted-navigation-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "面包屑",
+          "h2_section": "把预算落实到 URL 与内链模板",
+          "paragraph_index": 25,
+          "placement_type": "body",
+          "source_span": [
+            2332,
+            2335
+          ],
+          "target_slug": "seo-navigation-depth-guide",
+          "written_link": "./seo-navigation-depth-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "内容",
+          "h2_section": "用示例完成一次预算分配",
+          "paragraph_index": 33,
+          "placement_type": "body",
+          "source_span": [
+            3190,
+            3192
+          ],
+          "target_slug": "seo-author-page-optimization",
+          "written_link": "./seo-author-page-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站分类层级SEO规划方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-category-hierarchy",
+          "written_link": "./seo-category-hierarchy.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站URL结构SEO优化实战指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "website-url-structure-seo",
+          "written_link": "./website-url-structure-seo.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO网站信息架构规划完整指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-site-architecture-planning",
+          "written_link": "./seo-site-architecture-planning.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站目录结构SEO设计方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-directory-structure-guide",
+          "written_link": "./seo-directory-structure-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站分类体系与Taxonomy SEO优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-taxonomy-optimization",
+          "written_link": "./seo-taxonomy-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站筛选页面SEO优化策略",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-filter-page-optimization",
+          "written_link": "./seo-filter-page-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站底部链接SEO优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-footer-link-optimization",
+          "written_link": "./seo-footer-link-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站页面点击深度SEO优化指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-click-depth-optimization",
+          "written_link": "./seo-click-depth-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站分页页面SEO优化完整指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-pagination-optimization",
+          "written_link": "./seo-pagination-optimization.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站Sitemap优化与搜索引擎收录指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "website-sitemap-optimization",
+          "written_link": "./website-sitemap-optimization.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 10,
+      "requested_targets": 24,
+      "skipped_targets": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-date-archive-pages"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-archive-page-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-category-page-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-search-result-pages"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-breadcrumb-navigation"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-tag-page-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-sitewide-links-guide"
+        }
+      ],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET",
+        "INSUFFICIENT_SAFE_INJECTION_POINTS"
+      ]
+    },
+    {
+      "article_slug": "technical-seo-crawl-timeout-diagnosis",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 8,
+      "config_version": "v1.1-default-1",
+      "events": [
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-compression-guide"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-url-migration"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-404-pages"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-indexing-troubleshooting"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-mobile-rendering"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-robots-txt-guide"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-core-web-vitals"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-x-robots-tag"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-canonical-guide"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-domain-migration"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-dns-performance"
+        },
+        {
+          "article_slug": "technical-seo-crawl-timeout-diagnosis",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-cache-control"
+        }
+      ],
+      "final_status": "PASS_WITH_SHORTFALL",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "异常",
+          "h2_section": "先确认问题属于哪一种超时",
+          "paragraph_index": 2,
+          "placement_type": "body",
+          "source_span": [
+            361,
+            363
+          ],
+          "target_slug": "technical-seo-soft-404-guide",
+          "written_link": "./technical-seo-soft-404-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "问题",
+          "h2_section": "分阶段测试 DNS、连接与响应时间",
+          "paragraph_index": 10,
+          "placement_type": "body",
+          "source_span": [
+            1582,
+            1584
+          ],
+          "target_slug": "technical-seo-redirect-chain",
+          "written_link": "./technical-seo-redirect-chain.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "解决",
+          "h2_section": "排查应用、缓存与安全策略",
+          "paragraph_index": 19,
+          "placement_type": "body",
+          "source_span": [
+            2842,
+            2844
+          ],
+          "target_slug": "technical-seo-canonical-errors",
+          "written_link": "./technical-seo-canonical-errors.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "抓取",
+          "h2_section": null,
+          "paragraph_index": 0,
+          "placement_type": "body",
+          "source_span": [
+            144,
+            146
+          ],
+          "target_slug": "seo-website-crawlability",
+          "written_link": "./seo-website-crawlability.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "响应时间",
+          "h2_section": "用服务器日志还原真实抓取过程",
+          "paragraph_index": 14,
+          "placement_type": "body",
+          "source_span": [
+            1964,
+            1968
+          ],
+          "target_slug": "technical-seo-cdn-guide",
+          "written_link": "./technical-seo-cdn-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "性能",
+          "h2_section": "建立可复现的监控与验收标准",
+          "paragraph_index": 34,
+          "placement_type": "body",
+          "source_span": [
+            4181,
+            4183
+          ],
+          "target_slug": "technical-seo-page-speed",
+          "written_link": "./technical-seo-page-speed.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "状态码",
+          "h2_section": "修复后的分层验证流程",
+          "paragraph_index": 28,
+          "placement_type": "body",
+          "source_span": [
+            3594,
+            3597
+          ],
+          "target_slug": "technical-seo-http-status-codes",
+          "written_link": "./technical-seo-http-status-codes.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "重定向",
+          "h2_section": "修复后的分层验证流程",
+          "paragraph_index": 29,
+          "placement_type": "body",
+          "source_span": [
+            3681,
+            3684
+          ],
+          "target_slug": "technical-seo-301-redirects",
+          "written_link": "./technical-seo-301-redirects.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "重复URL技术SEO诊断与处理方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-duplicate-urls",
+          "written_link": "./technical-seo-duplicate-urls.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "JavaScript网站搜索引擎抓取优化指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-javascript-crawling",
+          "written_link": "./technical-seo-javascript-crawling.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站请求超时对搜索引擎抓取的影响",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-timeout-errors",
+          "written_link": "./technical-seo-timeout-errors.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "技术SEO页面渲染依赖审计方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-rendering-dependency-audit",
+          "written_link": "./technical-seo-rendering-dependency-audit.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "HTTP迁移HTTPS的SEO操作流程",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-protocol-migration",
+          "written_link": "./technical-seo-protocol-migration.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "Meta Robots标签配置完整指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-meta-robots",
+          "written_link": "./technical-seo-meta-robots.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "WWW与非WWW域名SEO规范化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-www-non-www",
+          "written_link": "./technical-seo-www-non-www.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "Noindex标签SEO配置与使用指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-noindex-guide",
+          "written_link": "./technical-seo-noindex-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "HTTPS对SEO的影响与配置指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-https-guide",
+          "written_link": "./technical-seo-https-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "URL末尾斜杠SEO规范化指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-trailing-slash",
+          "written_link": "./technical-seo-trailing-slash.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 10,
+      "requested_targets": 30,
+      "skipped_targets": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-compression-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-url-migration"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-404-pages"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-indexing-troubleshooting"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-mobile-rendering"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-robots-txt-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-core-web-vitals"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-x-robots-tag"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-canonical-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-domain-migration"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-dns-performance"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-cache-control"
+        }
+      ],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET",
+        "INSUFFICIENT_SAFE_INJECTION_POINTS"
+      ]
+    },
+    {
+      "article_slug": "technical-seo-rendering-dependency-audit",
+      "batch_id": "internal-link-production-batch-010",
+      "body_links": 7,
+      "config_version": "v1.1-default-1",
+      "events": [
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-http-status-codes"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-meta-robots"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-noindex-guide"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-url-migration"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-javascript-crawling"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-core-web-vitals"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-301-redirects"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-robots-txt-guide"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-https-guide"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-cache-control"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-compression-guide"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "seo-website-crawlability"
+        },
+        {
+          "article_slug": "technical-seo-rendering-dependency-audit",
+          "code": "NO_SAFE_INJECTION_POINT",
+          "message": "无安全 Body anchor 且 Related 已满或 anchor 不合法",
+          "stage": "placement",
+          "target_slug": "technical-seo-www-non-www"
+        }
+      ],
+      "final_status": "PASS_WITH_SHORTFALL",
+      "placements": [
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "抓取",
+          "h2_section": null,
+          "paragraph_index": 1,
+          "placement_type": "body",
+          "source_span": [
+            310,
+            312
+          ],
+          "target_slug": "technical-seo-crawl-timeout-diagnosis",
+          "written_link": "./technical-seo-crawl-timeout-diagnosis.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "状态码",
+          "h2_section": "建立页面渲染依赖图",
+          "paragraph_index": 17,
+          "placement_type": "body",
+          "source_span": [
+            1592,
+            1595
+          ],
+          "target_slug": "technical-seo-server-errors",
+          "written_link": "./technical-seo-server-errors.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "robots",
+          "h2_section": "审核渲染后的 SEO 元素",
+          "paragraph_index": 31,
+          "placement_type": "body",
+          "source_span": [
+            2709,
+            2715
+          ],
+          "target_slug": "technical-seo-nofollow-guide",
+          "written_link": "./technical-seo-nofollow-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "问题",
+          "h2_section": "风险分级与整改验证",
+          "paragraph_index": 34,
+          "placement_type": "body",
+          "source_span": [
+            3061,
+            3063
+          ],
+          "target_slug": "technical-seo-timeout-errors",
+          "written_link": "./technical-seo-timeout-errors.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "404",
+          "h2_section": "明确要审计的页面与关键内容",
+          "paragraph_index": 3,
+          "placement_type": "body",
+          "source_span": [
+            464,
+            467
+          ],
+          "target_slug": "technical-seo-soft-404-guide",
+          "written_link": "./technical-seo-soft-404-guide.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "canonical",
+          "h2_section": "对比原始 HTML 与渲染后 DOM",
+          "paragraph_index": 9,
+          "placement_type": "body",
+          "source_span": [
+            853,
+            862
+          ],
+          "target_slug": "technical-seo-trailing-slash",
+          "written_link": "./technical-seo-trailing-slash.html"
+        },
+        {
+          "anchor_source": "controlled_target_term",
+          "anchor_text": "诊断",
+          "h2_section": "审核渲染后的 SEO 元素",
+          "paragraph_index": 32,
+          "placement_type": "body",
+          "source_span": [
+            2931,
+            2933
+          ],
+          "target_slug": "technical-seo-duplicate-urls",
+          "written_link": "./technical-seo-duplicate-urls.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站迁移SEO完整操作指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-site-migration",
+          "written_link": "./technical-seo-site-migration.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "Hreflang标签配置与国际SEO指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-hreflang-guide",
+          "written_link": "./technical-seo-hreflang-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "URL查询参数SEO优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-query-parameters",
+          "written_link": "./technical-seo-query-parameters.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO重定向链问题检测与解决方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-redirect-chain",
+          "written_link": "./technical-seo-redirect-chain.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "CDN配置对SEO抓取与页面性能的影响",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-cdn-guide",
+          "written_link": "./technical-seo-cdn-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站搜索引擎收录问题排查指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-indexing-troubleshooting",
+          "written_link": "./seo-indexing-troubleshooting.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "Canonical常见错误检测与修复方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-canonical-errors",
+          "written_link": "./technical-seo-canonical-errors.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "HTTP迁移HTTPS的SEO操作流程",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-protocol-migration",
+          "written_link": "./technical-seo-protocol-migration.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "SEO Canonical标签配置与使用指南",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "seo-canonical-guide",
+          "written_link": "./seo-canonical-guide.html"
+        },
+        {
+          "anchor_source": "related_full_title",
+          "anchor_text": "网站页面速度技术SEO优化方法",
+          "h2_section": "相关阅读",
+          "paragraph_index": null,
+          "placement_type": "related",
+          "source_span": null,
+          "target_slug": "technical-seo-page-speed",
+          "written_link": "./technical-seo-page-speed.html"
+        }
+      ],
+      "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+      "related_links": 10,
+      "requested_targets": 30,
+      "skipped_targets": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-http-status-codes"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-meta-robots"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-noindex-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-url-migration"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-javascript-crawling"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-core-web-vitals"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-301-redirects"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-robots-txt-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-https-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-cache-control"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-compression-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-website-crawlability"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-www-non-www"
+        }
+      ],
+      "warnings": [
+        "PLACEMENT_TARGET_NOT_MET",
+        "INSUFFICIENT_SAFE_INJECTION_POINTS"
+      ]
+    }
+  ],
+  "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+  "schema_version": "1"
+}

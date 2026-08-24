@@ -1,0 +1,400 @@
+{
+  "audit": {
+    "batch_status": "PASS",
+    "fail": 0,
+    "inbound_violations": 0,
+    "pass": 0,
+    "pass_with_shortfall": 10
+  },
+  "batch_id": "internal-link-production-batch-010",
+  "config_version": "v1.1-default-1",
+  "configured_max": 30,
+  "evidence_type": "production_batch_report",
+  "extension_version": "ilx1:c69ef3c60229d142601a490153487d1678d8f8ce2d398172d41140140fb2aebb",
+  "per_article": [
+    {
+      "actual_links": 14,
+      "body_links": 4,
+      "related_links": 10,
+      "same_batch_links": 0,
+      "selected_links": 14,
+      "shortfall": "INSUFFICIENT_RELEVANT_CANDIDATES",
+      "skipped": [],
+      "slug": "baidu-crawl-host-load-correlation",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 15,
+      "body_links": 9,
+      "related_links": 6,
+      "same_batch_links": 0,
+      "selected_links": 15,
+      "shortfall": "INSUFFICIENT_RELEVANT_CANDIDATES",
+      "skipped": [],
+      "slug": "baidu-indexing-content-revision-signal",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 15,
+      "body_links": 9,
+      "related_links": 6,
+      "same_batch_links": 0,
+      "selected_links": 15,
+      "shortfall": "INSUFFICIENT_RELEVANT_CANDIDATES",
+      "skipped": [],
+      "slug": "baidu-seo-ranking-drop-triage",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 14,
+      "body_links": 4,
+      "related_links": 10,
+      "same_batch_links": 0,
+      "selected_links": 30,
+      "shortfall": "INSUFFICIENT_SAFE_INJECTION_POINTS",
+      "skipped": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-duplication-check"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-hierarchy-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-hub-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-data-driven"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-gap-analysis"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-pruning-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-repurpose-strategy"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-introduction-writing"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-examples-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-table-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-formatting-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-conclusion-writing"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-list-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-source-quality"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-freshness-signals"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-content-performance-analysis"
+        }
+      ],
+      "slug": "content-seo-expert-review-checklist",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 9,
+      "body_links": 4,
+      "related_links": 5,
+      "same_batch_links": 1,
+      "selected_links": 9,
+      "shortfall": "INSUFFICIENT_RELEVANT_CANDIDATES",
+      "skipped": [],
+      "slug": "internal-link-anchor-context-window",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 9,
+      "body_links": 4,
+      "related_links": 5,
+      "same_batch_links": 1,
+      "selected_links": 9,
+      "shortfall": "INSUFFICIENT_RELEVANT_CANDIDATES",
+      "skipped": [],
+      "slug": "internal-link-inbound-decay-monitoring",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 14,
+      "body_links": 4,
+      "related_links": 10,
+      "same_batch_links": 0,
+      "selected_links": 30,
+      "shortfall": "INSUFFICIENT_SAFE_INJECTION_POINTS",
+      "skipped": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-topic-cluster-keywords"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-regional-strategy"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-ranking-opportunity"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-business-value"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-ranking-tracking"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-priority-model"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-expansion-methods"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-funnel-mapping"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-seasonality"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-clustering-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-long-tail-strategy"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-gap-competitors"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-semantic-analysis"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-performance-review"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-intent-analysis"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-keyword-competition-analysis"
+        }
+      ],
+      "slug": "keyword-research-intent-conflict-resolution",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 17,
+      "body_links": 7,
+      "related_links": 10,
+      "same_batch_links": 0,
+      "selected_links": 24,
+      "shortfall": "INSUFFICIENT_SAFE_INJECTION_POINTS",
+      "skipped": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-date-archive-pages"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-archive-page-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-category-page-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-search-result-pages"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-breadcrumb-navigation"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-tag-page-optimization"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-sitewide-links-guide"
+        }
+      ],
+      "slug": "site-architecture-directory-depth-budget",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 18,
+      "body_links": 8,
+      "related_links": 10,
+      "same_batch_links": 1,
+      "selected_links": 30,
+      "shortfall": "INSUFFICIENT_SAFE_INJECTION_POINTS",
+      "skipped": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-compression-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-url-migration"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-404-pages"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-indexing-troubleshooting"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-mobile-rendering"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-robots-txt-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-core-web-vitals"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-x-robots-tag"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-canonical-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-domain-migration"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-dns-performance"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-cache-control"
+        }
+      ],
+      "slug": "technical-seo-crawl-timeout-diagnosis",
+      "status": "PASS_WITH_SHORTFALL"
+    },
+    {
+      "actual_links": 17,
+      "body_links": 7,
+      "related_links": 10,
+      "same_batch_links": 1,
+      "selected_links": 30,
+      "shortfall": "INSUFFICIENT_SAFE_INJECTION_POINTS",
+      "skipped": [
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-http-status-codes"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-meta-robots"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-noindex-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-url-migration"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-javascript-crawling"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-core-web-vitals"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-301-redirects"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-robots-txt-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-https-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-cache-control"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-compression-guide"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "seo-website-crawlability"
+        },
+        {
+          "reason": "NO_SAFE_INJECTION_POINT",
+          "target_slug": "technical-seo-www-non-www"
+        }
+      ],
+      "slug": "technical-seo-rendering-dependency-audit",
+      "status": "PASS_WITH_SHORTFALL"
+    }
+  ],
+  "registry_version": "ilr1:a9cffcfb40d71d5d029be0ebcb7b3495ffcd2a968716683e04faf2a0d1cb505f",
+  "schema_version": "1",
+  "selector": {
+    "fail": 0,
+    "inbound_cap": 2,
+    "max_inbound": 2,
+    "pass": 5,
+    "pass_with_shortfall": 5
+  },
+  "shortfalls": {
+    "INSUFFICIENT_RELEVANT_CANDIDATES": 5,
+    "INSUFFICIENT_SAFE_INJECTION_POINTS": 5
+  }
+}

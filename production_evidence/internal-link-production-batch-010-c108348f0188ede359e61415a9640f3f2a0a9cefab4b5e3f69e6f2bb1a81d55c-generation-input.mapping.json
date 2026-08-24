@@ -1,0 +1,70 @@
+{
+  "batch_id": "internal-link-production-batch-010",
+  "canonical_article_count": 10,
+  "canonical_input_sha256": "c108348f0188ede359e61415a9640f3f2a0a9cefab4b5e3f69e6f2bb1a81d55c",
+  "generation_article_count": 10,
+  "generation_input_sha256": "8c191e45f655f9c6273139e142a1358c4f628c9b65a2a481fdb6fcb5e4125eda",
+  "mappings": [
+    {
+      "canonical_title": "百度蜘蛛抓取频率与主机负载关联分析",
+      "cluster": "baidu-crawl",
+      "generation_title": "百度蜘蛛抓取频率与主机负载关联分析",
+      "slug": "baidu-crawl-host-load-correlation"
+    },
+    {
+      "canonical_title": "百度内容修订信号与重新收录观察方法",
+      "cluster": "baidu-indexing",
+      "generation_title": "百度内容修订信号与重新收录观察方法",
+      "slug": "baidu-indexing-content-revision-signal"
+    },
+    {
+      "canonical_title": "百度关键词排名下降分层排查流程",
+      "cluster": "baidu-seo",
+      "generation_title": "百度关键词排名下降分层排查流程",
+      "slug": "baidu-seo-ranking-drop-triage"
+    },
+    {
+      "canonical_title": "SEO内容专家复核清单设计方法",
+      "cluster": "content-seo",
+      "generation_title": "SEO内容专家复核清单设计方法",
+      "slug": "content-seo-expert-review-checklist"
+    },
+    {
+      "canonical_title": "内链锚文本上下文窗口评估方法",
+      "cluster": "internal-linking",
+      "generation_title": "内链锚文本上下文窗口评估方法",
+      "slug": "internal-link-anchor-context-window"
+    },
+    {
+      "canonical_title": "内链入链价值衰减监控方法",
+      "cluster": "internal-linking",
+      "generation_title": "内链入链价值衰减监控方法",
+      "slug": "internal-link-inbound-decay-monitoring"
+    },
+    {
+      "canonical_title": "关键词搜索意图冲突消解方法",
+      "cluster": "keyword-research",
+      "generation_title": "关键词搜索意图冲突消解方法",
+      "slug": "keyword-research-intent-conflict-resolution"
+    },
+    {
+      "canonical_title": "网站目录层级深度预算制定方法",
+      "cluster": "site-architecture",
+      "generation_title": "网站目录层级深度预算制定方法",
+      "slug": "site-architecture-directory-depth-budget"
+    },
+    {
+      "canonical_title": "技术SEO抓取超时诊断与验证流程",
+      "cluster": "technical-seo",
+      "generation_title": "技术SEO抓取超时诊断与验证流程",
+      "slug": "technical-seo-crawl-timeout-diagnosis"
+    },
+    {
+      "canonical_title": "技术SEO页面渲染依赖审计方法",
+      "cluster": "technical-seo",
+      "generation_title": "技术SEO页面渲染依赖审计方法",
+      "slug": "technical-seo-rendering-dependency-audit"
+    }
+  ],
+  "schema_version": "1"
+}

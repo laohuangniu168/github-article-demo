@@ -9,7 +9,7 @@ TOOLS = Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS))
 
 from article_spec import ArticleSpec
-from internal_link_audit import audit_article, audit_batch
+from internal_link_audit import _scan_markdown, audit_article, audit_batch
 from internal_link_injector import InjectionResult, Placement, SkippedTarget
 from internal_link_registry import RegistryEntry, RegistrySnapshot, compute_registry_version
 from internal_link_selector import LinkSelectionPlan, SelectedTarget
@@ -215,6 +215,46 @@ class AuditTests(unittest.TestCase):
         self.assertIn("[Canonical 标签](/canonical-guide/)",baseline)
         self.assertIn("[Canonical 标签](/canonical-guide/)",final)
         self.assertEqual((invalid_shortfall,invalid_url),(0,0))
+
+    def test_56_fenced_log_html_is_not_malformed(self):
+        text=plain_markdown().replace("正文内容。","```log\n123 - [18/Mar/2025] GET /article/123.html\n```\n\n正文内容。")
+        _, malformed, _, _=_scan_markdown(text)
+        self.assertEqual(malformed,0)
+
+    def test_57_normal_paragraph_malformed_still_fails(self):
+        r=registry(); text=markdown(r).replace("## 正文","## 正文\n\n[broken ./target-00.html")
+        x=self.run_audit(text,r,plan(r))
+        self.assertEqual(x.final_status,"FAIL")
+        self.assertTrue(any(e.code=="MALFORMED_MARKDOWN_LINK" for e in x.events))
+
+    def test_58_inline_code_markdown_looking_text_is_ignored(self):
+        r=registry(); fragment="`[foo](/bar)`"
+        baseline=plain_markdown(fragment)
+        final=markdown(r,20,8).replace("## 正文",f"## 正文\n\n{fragment}")
+        x=self.provenance_case(baseline,final,20,injection_result(r,20))
+        self.assertEqual((x.final_status,x.malformed_markdown_links),("PASS",0))
+
+    def test_59_fenced_markdown_looking_text_is_ignored(self):
+        sample="```text\n[abc]\n(foo)\n/article/123.html\n[abc](/foo)\n![image](/foo.png)\n```"
+        r=registry(); baseline=plain_markdown().replace("正文内容。",sample)
+        final=markdown(r,20,8).replace("## 正文",f"## 正文\n\n{sample}")
+        x=self.provenance_case(baseline,final,20,injection_result(r,20))
+        self.assertEqual((x.final_status,x.internal_links,x.malformed_markdown_links,x.code_block_injections),("PASS",20,0,0))
+
+    def test_60_real_fenced_code_mutation_still_fails(self):
+        r=registry(); before_fence="```log\nGET /article/123.html\n```"; after_fence="```log\nGET /article/456.html\n```"
+        baseline=plain_markdown().replace("正文内容。",before_fence)
+        final=markdown(r,20,8).replace("## 正文",f"## 正文\n\n{after_fence}")
+        x=self.provenance_case(baseline,final,20,injection_result(r,20))
+        self.assertEqual(x.final_status,"FAIL")
+        self.assertTrue(any(e.code=="PROTECTED_ZONE_VIOLATION" for e in x.events))
+
+    def test_61_real_inline_code_mutation_still_fails(self):
+        r=registry(); baseline=plain_markdown(" `[foo](/bar)`")
+        final=markdown(r,20,8).replace("## 正文","## 正文\n\n`[foo](/changed)`")
+        x=self.provenance_case(baseline,final,20,injection_result(r,20))
+        self.assertEqual(x.final_status,"FAIL")
+        self.assertTrue(any(e.code=="PROTECTED_ZONE_VIOLATION" for e in x.events))
 
 
 if __name__ == "__main__": unittest.main()

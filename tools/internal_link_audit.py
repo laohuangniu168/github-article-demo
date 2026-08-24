@@ -170,6 +170,7 @@ def _scan_markdown(markdown: str) -> tuple[list[ParsedLink], int, list[str], int
 
         image_spans = [(m.start(), m.end()) for m in IMAGE_RE.finditer(line)]
         strict_spans: list[tuple[int, int]] = []
+        markdown_semantic_zone = zone not in {"front_matter", "h1", "fenced_code", "raw_boundary_line"}
         for match in LINK_RE.finditer(line):
             if _overlaps(match.start(), match.end(), image_spans):
                 continue
@@ -182,9 +183,10 @@ def _scan_markdown(markdown: str) -> tuple[list[ParsedLink], int, list[str], int
             links.append(ParsedLink(match.group(1), match.group(2), number, link_zone, related))
 
         internal_hint = ".html" in line or "./" in line
-        if internal_hint:
+        if internal_hint and markdown_semantic_zone:
             remnants = line
-            for left, right in sorted(strict_spans + image_spans, reverse=True):
+            protected_spans = inline_spans + liquid_spans + html_spans + comment_spans
+            for left, right in sorted(strict_spans + image_spans + protected_spans, reverse=True):
                 remnants = remnants[:left] + (" " * (right - left)) + remnants[right:]
             if "[" in remnants or "](" in remnants:
                 malformed += 1
@@ -200,6 +202,56 @@ def _scan_markdown(markdown: str) -> tuple[list[ParsedLink], int, list[str], int
     if related_headers > 1:
         related_errors.append("multiple related blocks")
     return links, malformed, related_errors, related_headers
+
+
+def _protected_zone_snapshot(markdown: str) -> tuple[tuple[str, ...], ...]:
+    lines = markdown.splitlines(keepends=True)
+    front = bool(lines and lines[0].rstrip("\r\n") == "---")
+    fence: str | None = None
+    fenced_blocks: list[str] = []
+    fenced: list[str] = []
+    front_lines: list[str] = []
+    h1_lines: list[str] = []
+    raw_lines: list[str] = []
+    inline: list[str] = []
+    liquid: list[str] = []
+    html: list[str] = []
+    comments: list[str] = []
+    html_comment = False
+
+    for number, raw_line in enumerate(lines, 1):
+        line = raw_line.rstrip("\r\n")
+        if front:
+            front_lines.append(raw_line)
+            if number > 1 and line == "---":
+                front = False
+            continue
+        fence_match = re.match(r"^ {0,3}(`{3,}|~{3,})", line)
+        if fence:
+            fenced.append(raw_line)
+            if fence_match and fence_match.group(1)[0] == fence[0] and len(fence_match.group(1)) >= len(fence):
+                fenced_blocks.append("".join(fenced)); fenced = []; fence = None
+            continue
+        if fence_match:
+            fence = fence_match.group(1); fenced = [raw_line]; continue
+        if re.match(r"^#\s+", line):
+            h1_lines.append(raw_line)
+        if re.fullmatch(r"\s*{%\s*(?:raw|endraw)\s*%}\s*", line):
+            raw_lines.append(raw_line)
+        inline.extend(match.group(0) for match in INLINE_CODE_RE.finditer(line))
+        liquid.extend(match.group(0) for match in LIQUID_RE.finditer(line))
+        html.extend(match.group(0) for match in HTML_TAG_RE.finditer(line))
+        if html_comment:
+            comments.append(raw_line)
+            if "-->" in line: html_comment = False
+        elif "<!--" in line:
+            comments.append(raw_line)
+            if "-->" not in line: html_comment = True
+
+    return (
+        tuple(front_lines), tuple(h1_lines), tuple(fenced_blocks), tuple(raw_lines),
+        tuple(inline), tuple(liquid), tuple(html), tuple(comments),
+    )
 
 
 def audit_article(
@@ -265,6 +317,8 @@ def audit_article(
         baseline_links, baseline_malformed, baseline_related_errors, _ = _scan_markdown(pre_injection_markdown)
         if baseline_malformed or baseline_related_errors:
             fail("BASELINE_MARKDOWN_INVALID")
+        if _protected_zone_snapshot(pre_injection_markdown) != _protected_zone_snapshot(markdown):
+            fail("PROTECTED_ZONE_VIOLATION")
         baseline_remaining.update((link.anchor, link.url) for link in baseline_links)
         if injection_result is None:
             fail("INJECTION_PROVENANCE_MISSING")

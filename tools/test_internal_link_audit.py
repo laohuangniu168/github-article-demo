@@ -153,6 +153,13 @@ class AuditTests(unittest.TestCase):
         x=self.run_audit(markdown(r,20,8),r,plan(r,25),injection_result=ir)
         self.assertEqual((x.final_status,x.shortfall_reason),("PASS",None))
 
+    def test_same_batch_rebalance_shortfall_evidence(self):
+        r=registry(); p=plan(r,20)
+        ir=injection_result(r,17,requested=20,safe_shortfall=True,warnings=("PLACEMENT_TARGET_NOT_MET","SAME_BATCH_LIMIT_REACHED"))
+        ir=replace(ir,skipped_targets=tuple(SkippedTarget(r.entries[i].slug,"SAME_BATCH_LIMIT_REACHED") for i in range(17,20)))
+        x=self.run_audit(markdown(r,17,8),r,p,injection_result=ir)
+        self.assertEqual((x.final_status,x.shortfall_reason),("PASS_WITH_SHORTFALL","SAME_BATCH_LIMIT_REACHED"))
+
     def provenance_case(self, baseline, final, count=20, ir=None):
         r=registry(); ir=ir or injection_result(r,count)
         return self.run_audit(final,r,plan(r,count),injection_result=ir,pre_injection_markdown=baseline)

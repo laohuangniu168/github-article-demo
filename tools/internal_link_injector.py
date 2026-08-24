@@ -12,6 +12,7 @@ from internal_link_registry import CANONICAL_BASE, RegistryEntry, RegistrySnapsh
 from internal_link_selector import (
     CONTROLLED_TOPIC_TERMS,
     LinkSelectionPlan,
+    SAME_BATCH_MAX_PERCENT,
 )
 
 
@@ -557,7 +558,7 @@ def inject_links(
     used_normalizations: set[str] = set()
     body_slugs: set[str] = set()
     placements: list[Placement] = []
-    replacements: list[tuple[int, int, str]] = []
+    body_replacements: dict[str, tuple[int, int, str]] = {}
     remaining: list[str] = []
 
     for target_slug in selected_slugs:
@@ -590,7 +591,7 @@ def inject_links(
         span, anchor = chosen
         written_link = f"./{target_slug}.html"
         replacement = f"[{anchor.anchor_text}]({written_link})"
-        replacements.append((anchor.source_span[0], anchor.source_span[1], replacement))
+        body_replacements[target_slug] = (anchor.source_span[0], anchor.source_span[1], replacement)
         used_paragraphs.add(span.paragraph_index)
         section_counts[span.h2_section] = section_counts.get(span.h2_section, 0) + 1
         used_normalizations.add(anchor.normalization_key)
@@ -649,7 +650,52 @@ def inject_links(
                 )
             )
 
+    selected_targets = {target.target_slug: target for target in plan.selected_targets}
+    removed_same_batch: list[str] = []
+    placed_same_batch = [
+        placement
+        for placement in placements
+        if selected_targets[placement.target_slug].same_batch
+    ]
+    removal_order = sorted(
+        placed_same_batch,
+        key=lambda placement: (
+            selected_targets[placement.target_slug].relevance_score,
+            0 if placement.placement_type == "related" else 1,
+            tuple(-ord(character) for character in selected_targets[placement.target_slug].deterministic_hash),
+            placement.target_slug,
+        ),
+    )
+    actual_total = len(placements)
+    actual_same_batch = len(placed_same_batch)
+    for placement in removal_order:
+        if actual_same_batch * 100 <= actual_total * SAME_BATCH_MAX_PERCENT:
+            break
+        target_slug = placement.target_slug
+        removed_same_batch.append(target_slug)
+        actual_same_batch -= 1
+        actual_total -= 1
+        if placement.placement_type == "body":
+            body_slugs.remove(target_slug)
+            body_replacements.pop(target_slug)
+        else:
+            related_slugs.remove(target_slug)
+        skipped.append(SkippedTarget(target_slug, "SAME_BATCH_LIMIT_REACHED"))
+        events.append(
+            InjectionEvent(
+                "SAME_BATCH_LIMIT_REACHED",
+                article_slug,
+                target_slug,
+                "post_placement_rebalance",
+                "最终 placement same-batch 比例超过上限，确定性撤销最少数量",
+            )
+        )
+    if removed_same_batch:
+        removed = set(removed_same_batch)
+        placements = [placement for placement in placements if placement.target_slug not in removed]
+
     related_block = ""
+    replacements = list(body_replacements.values())
     if related_slugs:
         related_lines = ["## 相关阅读", ""]
         related_lines.extend(
@@ -680,7 +726,10 @@ def inject_links(
     if body_links < body_target or related_links < min(RELATED_TARGET_MIN, requested):
         warnings.append("PLACEMENT_TARGET_NOT_MET")
     if placed < requested:
-        warnings.append("INSUFFICIENT_SAFE_INJECTION_POINTS")
+        if any(item.reason == "NO_SAFE_INJECTION_POINT" for item in skipped):
+            warnings.append("INSUFFICIENT_SAFE_INJECTION_POINTS")
+        if removed_same_batch:
+            warnings.append("SAME_BATCH_LIMIT_REACHED")
         status = "PASS_WITH_SHORTFALL"
     else:
         status = "PASS"

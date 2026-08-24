@@ -112,9 +112,65 @@ def make_extension(entries: tuple[BatchExtensionEntry, ...] | None = None, **cha
 def extension_plan(registry: RegistrySnapshot, *, mixed: bool = False, target_slug: str = "batch-target", source: str = "batch_registry_extension") -> LinkSelectionPlan:
     selected = []
     if mixed:
-        selected.append(SelectedTarget(registry.entries[0].slug, "content-seo", 60, ("same_cluster:+50",), "frozen_registry", False, 0, 1, "0" * 64))
+        selected.extend(
+            SelectedTarget(entry.slug, "content-seo", 60, ("same_cluster:+50",), "frozen_registry", False, 0, 1, f"{index:064x}")
+            for index, entry in enumerate(registry.entries[:3])
+        )
     selected.append(SelectedTarget(target_slug, "content-seo", 60, ("same_cluster:+50",), source, True, 0, 1, "1" * 64))
     return replace(make_plan(registry, count=0), selected_targets=tuple(selected), internal_links=len(selected), same_batch_links=1)
+
+
+def cap_case(registry: RegistrySnapshot, *, actual_total: int, same_batch: int, same_batch_in_body: bool = False):
+    extension_entries = tuple(
+        extension_entry(f"batch-target-{index:02d}", title=f"批次独特主题{index:02d}方法")
+        for index in range(same_batch)
+    )
+    extension = make_extension(extension_entries)
+    body_count = actual_total - 10
+    frozen_targets = list(registry.entries[:15])
+    body_frozen = frozen_targets[:body_count]
+    selected = []
+    body_lines = []
+    if same_batch_in_body:
+        body_batch = extension_entries[:1]
+        body_frozen = frozen_targets[: max(0, body_count - len(body_batch))]
+        body_entries = list(body_batch) + body_frozen
+    else:
+        body_entries = body_frozen
+    for index, entry in enumerate(body_entries):
+        is_batch = isinstance(entry, BatchExtensionEntry)
+        selected.append(
+            SelectedTarget(
+                entry.slug, entry.cluster, 60, ("same_cluster:+50",),
+                "batch_registry_extension" if is_batch else "frozen_registry",
+                is_batch, 0, 1, f"{index + 1:064x}",
+            )
+        )
+        body_lines.extend([f"## 正文{index + 1}", "", f"这里自然讨论{entry.title}的实际应用。", ""])
+    already_batch = sum(item.same_batch for item in selected)
+    for index, entry in enumerate(extension_entries[already_batch:], start=len(selected)):
+        selected.append(SelectedTarget(entry.slug, entry.cluster, 60, ("same_cluster:+50",), "batch_registry_extension", True, 0, 1, f"{index + 1:064x}"))
+    used_frozen = {item.target_slug for item in selected if not item.same_batch}
+    for entry in frozen_targets:
+        if entry.slug in used_frozen:
+            continue
+        index = len(selected)
+        selected.append(SelectedTarget(entry.slug, entry.cluster, 60, ("same_cluster:+50",), "frozen_registry", False, 0, 1, f"{index + 1:064x}"))
+        if len(selected) == 20:
+            break
+    plan = replace(
+        make_plan(registry, count=0),
+        selected_targets=tuple(selected),
+        internal_links=len(selected),
+        same_batch_links=sum(item.same_batch for item in selected),
+        same_batch_ratio=sum(item.same_batch for item in selected) / len(selected),
+    )
+    markdown = (
+        '---\ntitle: "新文章"\ndescription: "用于最终比例修复测试。"\n---\n\n'
+        '# 新文章\n\n{% raw %}\n\n' + "\n".join(body_lines)
+        + '## 总结\n\n结束。\n\n{% endraw %}\n'
+    )
+    return markdown, plan, extension
 
 
 def article_text(
@@ -380,14 +436,15 @@ class InternalLinkInjectorTests(unittest.TestCase):
         )
 
     def test_batch_extension_target_injects(self):
-        outcome = self.extension_inject()
+        registry = make_registry()
+        outcome = self.extension_inject(registry=registry, plan=extension_plan(registry, mixed=True))
         self.assertNotEqual(outcome.result.final_status, "FAIL")
         self.assertIn("./batch-target.html", outcome.markdown)
 
     def test_frozen_and_batch_targets_inject(self):
         registry = make_registry()
         outcome = self.extension_inject(registry=registry, plan=extension_plan(registry, mixed=True))
-        self.assertEqual(outcome.result.requested_targets, 2)
+        self.assertEqual(outcome.result.requested_targets, 4)
         self.assertIn("./target-00.html", outcome.markdown)
         self.assertIn("./batch-target.html", outcome.markdown)
 
@@ -451,6 +508,112 @@ class InternalLinkInjectorTests(unittest.TestCase):
 
     def test_extension_injection_is_deterministic(self):
         self.assertEqual(self.extension_inject(), self.extension_inject())
+
+    def cap_outcome(self, actual_total: int, same_batch: int, *, same_batch_in_body: bool = False):
+        registry = make_registry()
+        markdown, plan, extension = cap_case(
+            registry,
+            actual_total=actual_total,
+            same_batch=same_batch,
+            same_batch_in_body=same_batch_in_body,
+        )
+        outcome = self.inject(
+            markdown,
+            registry=registry,
+            plan=plan,
+            batch_extension=extension,
+            extension_version=extension.extension_version,
+            file_exists=lambda _: True,
+        )
+        selected = {item.target_slug: item for item in plan.selected_targets}
+        actual_same = sum(selected[item.target_slug].same_batch for item in outcome.result.placements)
+        return markdown, outcome, actual_same
+
+    def test_post_placement_ratio_within_cap_is_unchanged(self):
+        _, outcome, same = self.cap_outcome(12, 4)
+        self.assertEqual((len(outcome.result.placements), same), (12, 4))
+        self.assertNotIn("SAME_BATCH_LIMIT_REACHED", {event.code for event in outcome.result.events})
+
+    def test_post_placement_five_of_twelve_removes_minimum(self):
+        _, outcome, same = self.cap_outcome(12, 5)
+        self.assertEqual((len(outcome.result.placements), same), (10, 3))
+        removed = [item for item in outcome.result.skipped_targets if item.reason == "SAME_BATCH_LIMIT_REACHED"]
+        self.assertEqual(len(removed), 2)
+
+    def test_post_placement_five_of_fourteen_removes_minimum(self):
+        _, outcome, same = self.cap_outcome(14, 5)
+        self.assertEqual((len(outcome.result.placements), same), (13, 4))
+        self.assertLessEqual(same * 100, len(outcome.result.placements) * 35)
+
+    def test_post_placement_four_of_twelve_needs_no_removal(self):
+        _, outcome, same = self.cap_outcome(12, 4)
+        self.assertEqual((len(outcome.result.placements), same), (12, 4))
+
+    def test_post_placement_rebalance_is_deterministic(self):
+        self.assertEqual(self.cap_outcome(12, 5), self.cap_outcome(12, 5))
+
+    def test_post_placement_related_is_removed_before_body(self):
+        _, outcome, _ = self.cap_outcome(12, 5, same_batch_in_body=True)
+        removed = {
+            event.target_slug
+            for event in outcome.result.events
+            if event.code == "SAME_BATCH_LIMIT_REACHED"
+        }
+        body_same = next(
+            item.target_slug
+            for item in outcome.result.placements
+            if item.placement_type == "body" and item.target_slug.startswith("batch-target-")
+        )
+        self.assertNotIn(body_same, removed)
+
+    def test_post_placement_body_removal_restores_literal_text(self):
+        registry = make_registry()
+        long_entries = tuple(replace(entry, title=f"无法用于相关阅读的超长标题{index:02d}" + "超长" * 20) for index, entry in enumerate(registry.entries))
+        registry = RegistrySnapshot(
+            long_entries,
+            registry.source_batches,
+            registry.registry_schema_version,
+            compute_registry_version(long_entries, source_batches=registry.source_batches),
+        )
+        extension_entries = tuple(extension_entry(f"batch-target-{index:02d}", title=f"批次正文主题{index:02d}") for index in range(5))
+        extension = make_extension(extension_entries)
+        selected = [
+            SelectedTarget(entry.slug, entry.cluster, 60, ("same_cluster:+50",), "batch_registry_extension", True, 0, 1, f"{index:064x}")
+            for index, entry in enumerate(extension_entries)
+        ]
+        selected.extend(
+            SelectedTarget(entry.slug, entry.cluster, 60, ("same_cluster:+50",), "frozen_registry", False, 0, 1, f"{index + 5:064x}")
+            for index, entry in enumerate(registry.entries[:15])
+        )
+        plan = replace(make_plan(registry, 0), selected_targets=tuple(selected), internal_links=20, same_batch_links=5, same_batch_ratio=.25)
+        paragraphs = "\n\n".join(f"## 章节{index}\n\n这里自然讨论{entry.title}的应用。" for index, entry in enumerate(extension_entries))
+        markdown = f'---\ntitle: "新文章"\n---\n\n# 新文章\n\n{{% raw %}}\n\n{paragraphs}\n\n## 总结\n\n结束。\n\n{{% endraw %}}\n'
+        outcome = self.inject(markdown, registry=registry, plan=plan, batch_extension=extension, extension_version=extension.extension_version, file_exists=lambda _: True)
+        removed_body = [event for event in outcome.result.events if event.code == "SAME_BATCH_LIMIT_REACHED"]
+        stripped = re.sub(r"\[([^\]]+)\]\(\./[a-z0-9-]+\.html\)", r"\1", outcome.markdown)
+        stripped = re.sub(r"## 相关阅读\n\n(?:- .*\n)+\n", "", stripped)
+        self.assertEqual(stripped, markdown)
+        self.assertTrue(removed_body)
+        self.assertTrue(all(event.stage == "post_placement_rebalance" for event in removed_body))
+
+    def test_post_placement_related_removal_keeps_list_valid(self):
+        _, outcome, _ = self.cap_outcome(12, 5)
+        self.assertEqual(outcome.markdown.count("## 相关阅读"), 1)
+        self.assertNotRegex(outcome.markdown, r"## 相关阅读\n\n\n")
+        scan_markdown(outcome.markdown)
+
+    def test_post_placement_shortfall_has_real_provenance(self):
+        _, outcome, same = self.cap_outcome(12, 5)
+        self.assertEqual(outcome.result.final_status, "PASS_WITH_SHORTFALL")
+        self.assertIn("SAME_BATCH_LIMIT_REACHED", outcome.result.warnings)
+        self.assertLessEqual(same * 100, len(outcome.result.placements) * 35)
+
+    def test_post_placement_rebalance_introduces_no_invalid_links(self):
+        _, outcome, _ = self.cap_outcome(12, 5)
+        targets = [item.target_slug for item in outcome.result.placements]
+        self.assertEqual(len(targets), len(set(targets)))
+        self.assertNotIn("new-article", targets)
+        self.assertFalse(any(event.code in {"MALFORMED_MARKDOWN", "PROTECTED_ZONE_VIOLATION"} for event in outcome.result.events))
 
 
 if __name__ == "__main__":

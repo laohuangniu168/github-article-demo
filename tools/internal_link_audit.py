@@ -405,20 +405,40 @@ def audit_article(
     reason = None
     if total < 20:
         injection_safe_shortfall = False
+        injection_same_batch_shortfall = False
         if injection_result is not None:
-            allowed_injection_warnings = {"PLACEMENT_TARGET_NOT_MET", "INSUFFICIENT_SAFE_INJECTION_POINTS"}
+            allowed_injection_warnings = {
+                "PLACEMENT_TARGET_NOT_MET",
+                "INSUFFICIENT_SAFE_INJECTION_POINTS",
+                "SAME_BATCH_LIMIT_REACHED",
+            }
             if any(warning not in allowed_injection_warnings for warning in injection_result.warnings):
                 fail("INVALID_SHORTFALL_REASON")
-            injection_safe_shortfall = (
+            injection_evidence_valid = (
                 injection_result.final_status == "PASS_WITH_SHORTFALL"
-                and "INSUFFICIENT_SAFE_INJECTION_POINTS" in injection_result.warnings
                 and injection_result.requested_targets > total
                 and len(injection_result.placements) == total
                 and len(injection_result.skipped_targets) == injection_result.requested_targets - total
-                and all(skipped.reason == "NO_SAFE_INJECTION_POINT" for skipped in injection_result.skipped_targets)
+                and all(
+                    skipped.reason in {"NO_SAFE_INJECTION_POINT", "SAME_BATCH_LIMIT_REACHED"}
+                    for skipped in injection_result.skipped_targets
+                )
+            )
+            skipped_reasons = {skipped.reason for skipped in injection_result.skipped_targets}
+            injection_safe_shortfall = (
+                injection_evidence_valid
+                and "INSUFFICIENT_SAFE_INJECTION_POINTS" in injection_result.warnings
+                and "NO_SAFE_INJECTION_POINT" in skipped_reasons
+            )
+            injection_same_batch_shortfall = (
+                injection_evidence_valid
+                and "SAME_BATCH_LIMIT_REACHED" in injection_result.warnings
+                and "SAME_BATCH_LIMIT_REACHED" in skipped_reasons
             )
         if injection_safe_shortfall:
             reason = "INSUFFICIENT_SAFE_INJECTION_POINTS"
+        elif injection_same_batch_shortfall:
+            reason = "SAME_BATCH_LIMIT_REACHED"
         elif plan.internal_links < 20 and total == plan.internal_links and plan.shortfall_reason in ALLOWED_SHORTFALL_REASONS:
             reason = plan.shortfall_reason
         else:

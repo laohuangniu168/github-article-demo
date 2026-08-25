@@ -24,6 +24,8 @@ MAX_SPECIFIED_LINKS_PER_ARTICLE = 3
 SPECIFIED_ANCHOR_MIN_LENGTH = 2
 SPECIFIED_ANCHOR_MAX_LENGTH = 40
 
+ALLOWED_SCHEMES = frozenset({"http", "https"})
+HTTPS_REQUIRED = "HTTPS_REQUIRED"  # Legacy error-code compatibility; not used for valid HTTP.
 ID_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 HOST_LABEL_PATTERN = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$")
 ALLOWED_CLUSTERS = frozenset(
@@ -61,6 +63,7 @@ PREFLIGHT_ERROR_CODES = frozenset(
         "TARGET_URL_DNS_ERROR",
         "TARGET_URL_TLS_ERROR",
         "TARGET_URL_TIMEOUT",
+        "TARGET_URL_CONNECTION_ERROR",
     }
 )
 REDIRECT_STATUS_CODES = frozenset({301, 302, 303, 307, 308})
@@ -153,8 +156,9 @@ def canonicalize_specified_url(url: str) -> str:
     except ValueError as exc:
         _fail("INVALID_SPECIFIED_URL", f"URL 解析失败：{exc}")
 
-    if parsed.scheme.lower() != "https":
-        _fail("HTTPS_REQUIRED", "Specified Link 仅允许 HTTPS")
+    scheme = parsed.scheme.lower()
+    if scheme not in ALLOWED_SCHEMES:
+        _fail("INVALID_SPECIFIED_URL", "Specified Link 仅允许 HTTP 或 HTTPS")
     if parsed.query:
         _fail("URL_QUERY_NOT_ALLOWED", "URL 不允许 query string")
     if parsed.fragment:
@@ -189,14 +193,15 @@ def canonicalize_specified_url(url: str) -> str:
         _fail("INVALID_SPECIFIED_URL", "URL hostname 含非法 label")
     if _is_forbidden_host(hostname):
         _fail("LOCAL_OR_IP_TARGET_REJECTED", "不允许本地、保留或示例 target")
-    if port not in (None, 443):
-        _fail("INVALID_SPECIFIED_URL", "URL 仅允许默认 HTTPS 端口")
+    default_port = 80 if scheme == "http" else 443
+    if port not in (None, default_port):
+        _fail("INVALID_SPECIFIED_URL", "URL 仅允许与协议匹配的默认端口")
 
     path = parsed.path or "/"
     if any(segment in {".", ".."} for segment in path.split("/")):
         _fail("INVALID_SPECIFIED_URL", "URL path 不允许 dot segment")
     netloc = hostname
-    return urlunsplit(("https", netloc, path, "", ""))
+    return urlunsplit((scheme, netloc, path, "", ""))
 
 
 def normalize_specified_anchor(anchor: str) -> str:
@@ -416,6 +421,7 @@ def _expected_preflight_error(status_code: int | None, error_code: str | None) -
         "TARGET_URL_DNS_ERROR",
         "TARGET_URL_TLS_ERROR",
         "TARGET_URL_TIMEOUT",
+        "TARGET_URL_CONNECTION_ERROR",
     }:
         return error_code
     return "TARGET_URL_HTTP_ERROR"
@@ -433,6 +439,8 @@ def validate_preflight_result(
         _fail("UNAPPROVED_SPECIFIED_URL", "Preflight URL 与 Registry identity 不一致", entry_id=preflight.entry_id)
     if preflight.result not in {"PASS", "FAIL"}:
         _fail("UNAPPROVED_SPECIFIED_URL", "Preflight result 必须为 PASS 或 FAIL", entry_id=preflight.entry_id)
+    if entry.canonical_url.startswith("http://") and preflight.error_code == "TARGET_URL_TLS_ERROR":
+        _fail("UNAPPROVED_SPECIFIED_URL", "HTTP target 不适用 TLS failure", entry_id=preflight.entry_id)
 
     expected_error = _expected_preflight_error(preflight.status_code, preflight.error_code)
     if expected_error is None:

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from specified_link_registry import (
     ALLOWED_CLUSTERS,
+    ALLOWED_SCHEMES,
+    HTTPS_REQUIRED,
     SpecifiedLinkContractError,
     SpecifiedLinkPreflightResult,
     build_specified_link_registry,
@@ -85,17 +87,62 @@ class SpecifiedLinkRegistryTests(unittest.TestCase):
         self.assertEqual(canonicalize_specified_url("HTTPS://Domain.COM"), "https://domain.com/")
         self.assertEqual(canonicalize_specified_url("https://Domain.com:443/SEO/"), "https://domain.com/SEO/")
 
+    def test_allowed_schemes_are_http_and_https(self):
+        self.assertEqual(ALLOWED_SCHEMES, frozenset({"http", "https"}))
+        self.assertEqual(HTTPS_REQUIRED, "HTTPS_REQUIRED")
+
+    def test_http_is_accepted_and_default_port_is_removed(self):
+        self.assertEqual(canonicalize_specified_url("HTTP://Domain.COM"), "http://domain.com/")
+        self.assertEqual(canonicalize_specified_url("http://Domain.com:80/SEO/"), "http://domain.com/SEO/")
+
+    def test_scheme_port_mismatch_and_non_default_ports_fail(self):
+        for url in (
+            "http://domain.com:443/",
+            "http://domain.com:81/",
+            "https://domain.com:80/",
+            "https://domain.com:444/",
+        ):
+            with self.subTest(url=url):
+                self.assert_code("INVALID_SPECIFIED_URL", lambda value=url: canonicalize_specified_url(value))
+
     def test_path_case_and_trailing_slash_are_preserved(self):
         self.assertEqual(canonicalize_specified_url("https://domain.com/SEO"), "https://domain.com/SEO")
         self.assertNotEqual(canonicalize_specified_url("https://domain.com/page"), canonicalize_specified_url("https://domain.com/page/"))
 
-    def test_http_fails(self):
-        self.assert_code("HTTPS_REQUIRED", lambda: canonicalize_specified_url("http://domain.com/"))
+    def test_legal_http_does_not_trigger_legacy_https_required(self):
+        self.assertEqual(canonicalize_specified_url("http://domain.com/"), "http://domain.com/")
 
     def test_other_schemes_fail(self):
         for url in ("javascript:alert(1)", "data:text/plain,x", "file:///tmp/x", "mailto:a@b.com", "ftp://domain.com/"):
             with self.subTest(url=url):
-                self.assert_code("HTTPS_REQUIRED", lambda value=url: canonicalize_specified_url(value))
+                self.assert_code("INVALID_SPECIFIED_URL", lambda value=url: canonicalize_specified_url(value))
+
+    def test_http_query_and_fragment_fail(self):
+        self.assert_code("URL_QUERY_NOT_ALLOWED", lambda: canonicalize_specified_url("http://domain.com/?a=1"))
+        self.assert_code("URL_FRAGMENT_NOT_ALLOWED", lambda: canonicalize_specified_url("http://domain.com/#x"))
+
+    def test_http_userinfo_local_ip_forbidden_host_and_dot_segment_fail(self):
+        cases = (
+            ("INVALID_SPECIFIED_URL", "http://user:pass@domain.com/"),
+            ("LOCAL_OR_IP_TARGET_REJECTED", "http://localhost/"),
+            ("LOCAL_OR_IP_TARGET_REJECTED", "http://127.0.0.1/"),
+            ("LOCAL_OR_IP_TARGET_REJECTED", "http://sub.example.com/"),
+            ("INVALID_SPECIFIED_URL", "http://domain.com/a/../b"),
+        )
+        for code, url in cases:
+            with self.subTest(url=url):
+                self.assert_code(code, lambda value=url: canonicalize_specified_url(value))
+
+    def test_http_and_https_are_distinct_canonical_identities(self):
+        http = canonicalize_specified_url("http://domain.com/page")
+        https = canonicalize_specified_url("https://domain.com/page")
+        self.assertNotEqual(http, https)
+        entries = self.parse(
+            "id-http|http://domain.com/page|HTTP Anchor|baidu-seo\n"
+            "id-https|https://domain.com/page|HTTPS Anchor|baidu-seo\n"
+        )
+        registry = build_specified_link_registry(entries)
+        self.assertEqual({entry.canonical_url for entry in registry.entries}, {http, https})
 
     def test_query_and_fragment_fail(self):
         self.assert_code("URL_QUERY_NOT_ALLOWED", lambda: canonicalize_specified_url("https://domain.com/?a=1"))
@@ -229,10 +276,37 @@ class SpecifiedLinkRegistryTests(unittest.TestCase):
 
     def test_preflight_transport_failures(self):
         registry = self.one()
-        for code in ("TARGET_URL_DNS_ERROR", "TARGET_URL_TLS_ERROR", "TARGET_URL_TIMEOUT"):
+        for code in (
+            "TARGET_URL_DNS_ERROR",
+            "TARGET_URL_TLS_ERROR",
+            "TARGET_URL_TIMEOUT",
+            "TARGET_URL_CONNECTION_ERROR",
+        ):
             with self.subTest(code=code):
                 result = self.preflight(registry, status_code=None, result="FAIL", error_code=code)
                 self.assertIs(validate_preflight_result(result, registry), result)
+
+    def test_http_preflight_direct_2xx_and_connection_error(self):
+        registry = self.one(url="http://domain.com/seo/")
+        direct = self.preflight(registry, status_code=204)
+        self.assertIs(validate_preflight_result(direct, registry), direct)
+        connection = self.preflight(
+            registry,
+            status_code=None,
+            result="FAIL",
+            error_code="TARGET_URL_CONNECTION_ERROR",
+        )
+        self.assertIs(validate_preflight_result(connection, registry), connection)
+
+    def test_http_preflight_tls_error_is_rejected(self):
+        registry = self.one(url="http://domain.com/seo/")
+        result = self.preflight(
+            registry,
+            status_code=None,
+            result="FAIL",
+            error_code="TARGET_URL_TLS_ERROR",
+        )
+        self.assert_code("UNAPPROVED_SPECIFIED_URL", lambda: validate_preflight_result(result, registry))
 
     def test_preflight_entry_identity_mismatch_fails(self):
         registry = self.one()

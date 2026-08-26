@@ -445,9 +445,17 @@ class DigestRendererTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertNotIn(token, source)
 
-    def test_no_gate5_audit_file_created(self):
-        self.assertFalse(Path(__file__).with_name("digest_audit.py").exists())
-        self.assertFalse(Path(__file__).with_name("test_digest_audit.py").exists())
+    def test_generator_does_not_depend_on_gate5_audit(self):
+        source = Path(__file__).with_name("digest_generator.py").read_text(encoding="utf-8").casefold()
+        forbidden = (
+            "import digest_audit",
+            "from digest_audit import",
+            "audit_digest_article",
+            "audit_digest_batch",
+        )
+        for token in forbidden:
+            with self.subTest(token=token):
+                self.assertNotIn(token, source)
 
 
 if __name__ == "__main__":

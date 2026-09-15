@@ -39,10 +39,17 @@ def _inline_html(text: str) -> tuple[str, int]:
 def render_static_html(markdown: str) -> tuple[str, int]:
     if not isinstance(markdown, str):
         raise TypeError('markdown must be str')
+    lines = markdown.removeprefix('\ufeff').splitlines()
+    # Strip only a complete front matter block at the document start.
+    if lines and lines[0] == '---':
+        for index in range(1, len(lines)):
+            if lines[index] in {'---', '...'}:
+                lines = lines[index + 1:]
+                break
     body: list[str] = []
     href_count = 0
-    for line in markdown.splitlines():
-        if not line:
+    for line in lines:
+        if not line or line.strip() in {'{% raw %}', '{% endraw %}'}:
             continue
         content, found = _inline_html(line.lstrip('#- ').strip())
         href_count += found
@@ -73,10 +80,14 @@ def create_local_digest_preview(
     markdown_path = assert_digest_output_path(root, Path('output/digest/markdown') / name)
     html_path = assert_digest_output_path(root, Path('output/digest/html') / (name.stem + '.html'))
     evidence_path = assert_digest_output_path(root, Path('output/digest/evidence') / (name.stem + '.json'))
+    source_exists = markdown_path.exists()
+    if source_exists and markdown_path.read_text(encoding='utf-8') != markdown:
+        raise ValueError('existing Markdown source differs from preview input')
     html, href_count = render_static_html(markdown)
     for parent in (markdown_path.parent, html_path.parent, evidence_path.parent):
         parent.mkdir(parents=True, exist_ok=True)
-    markdown_path.write_text(markdown, encoding='utf-8', newline='')
+    if not source_exists:
+        markdown_path.write_text(markdown, encoding='utf-8', newline='')
     html_path.write_text(html, encoding='utf-8', newline='')
     evidence = {
         'audit_status': audit_status,

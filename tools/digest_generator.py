@@ -19,7 +19,7 @@ from digest_registry import (
 DEFAULT_DIGEST_MODEL = "gpt-5.6"
 MIN_SUMMARY_CODEPOINTS = 60
 MAX_SUMMARY_CODEPOINTS = 180
-RECOMMENDED_MIN_SUMMARY_CODEPOINTS = 80
+RECOMMENDED_MIN_SUMMARY_CODEPOINTS = 70
 RECOMMENDED_MAX_SUMMARY_CODEPOINTS = 150
 _LOGGER = logging.getLogger(__name__)
 MAX_SECTION_NAME_CODEPOINTS = 30
@@ -169,7 +169,7 @@ def build_digest_prompt(plan: DigestArticlePlan, registry: DigestRegistry) -> st
         "不得编造 Title 中不存在的事实，包括具体数字、人物原话、公司公告、政策细节、事件结果、时间地点或目标网页正文事实。\n"
         "不得伪装成目标网页摘要、原文摘录或新闻事实复述；不得无依据使用据报道、文章指出、报道显示、根据原文、该新闻称、消息称、数据显示、官方表示、记者获悉。\n"
         "将全部 entry_id 分类到一个或多个 section；每个 entry_id 必须恰好出现一次。\n"
-        "每条 summary 推荐 80–150 中文字，硬范围为 60–180 Unicode code points（含标点）。\n"
+        "每条 summary 推荐 70–150 中文字，硬范围为 60–180 Unicode code points（含标点）。\n"
         "通常使用 2–3 个自然句子；优先信息密度、可读性和自然导读，不为凑句数或字数制造空话、重复句、同义改写或无意义扩写。\n"
         "避免模板化重复，同一 Digest 中 Summary 开头和句式应有适度变化，不得全部使用完全相同开头。\n"
         "不要抓取 URL、搜索网页、补充新闻事实、猜测正文或生成引用来源。\n"

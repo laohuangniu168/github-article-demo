@@ -80,7 +80,7 @@ def audit(case):
 
 class DigestAuditTests(unittest.TestCase):
     def test_density_tolerance_is_warning_only(self):
-        for length in (60, 79, 80, 150, 151, 180):
+        for length in (60, 69, 70, 79, 80, 150, 151, 180):
             with self.subTest(length=length):
                 registry, plan, generated, _ = make_case()
                 first = replace(generated.sections[0].entries[0], summary="文" * length)
@@ -90,7 +90,7 @@ class DigestAuditTests(unittest.TestCase):
                 result = audit((registry, plan, generated, rendered))
                 self.assertEqual("PASS", result.status)
                 self.assertEqual((), result.errors)
-                self.assertEqual(int(length < 80 or length > 150), len(result.warnings))
+                self.assertEqual(int(length < 70 or length > 150), len(result.warnings))
                 if result.warnings:
                     warning = result.warnings[0]
                     self.assertEqual(("SUMMARY_DENSITY_WARNING", first.entry_id, "summary", length),

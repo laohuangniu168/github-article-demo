@@ -148,7 +148,7 @@ class DigestGeneratorTests(unittest.TestCase):
         self.assertEqual(20, len(summaries))
         self.assertGreaterEqual(min(map(len, summaries)), 60)
         self.assertLessEqual(max(map(len, summaries)), 180)
-        self.assertGreaterEqual(sum(80 <= len(summary) <= 150 for summary in summaries), 18)
+        self.assertGreaterEqual(sum(70 <= len(summary) <= 150 for summary in summaries), 18)
         self.assertTrue(all(2 <= len(re.findall(r"[。！？]", summary)) <= 3 for summary in summaries))
         self.assert_varied_openings(summaries)
         self.assertEqual(1, len(client.responses.calls))
@@ -215,7 +215,7 @@ class DigestGeneratorTests(unittest.TestCase):
         registry, plan = make_case()
         prompt = build_digest_prompt(plan, registry)
         for requirement in (
-            "80–150", "60–180", "2–3", "主题导读", "不声称读取 URL 或原文",
+            "70–150", "60–180", "2–3", "主题导读", "不声称读取 URL 或原文",
             "不得编造 Title 中不存在的事实", "避免模板化重复", "开头和句式",
             "空话", "同义改写", "据报道", "文章指出", "报道显示", "根据原文",
             "该新闻称", "消息称", "数据显示", "官方表示", "记者获悉",
@@ -232,7 +232,7 @@ class DigestGeneratorTests(unittest.TestCase):
                 self.assert_generation_code(code, payload)
 
     def test_density_warnings_do_not_retry(self):
-        for length in (60, 79, 151, 180):
+        for length in (60, 69, 151, 180):
             with self.subTest(length=length):
                 registry, plan = make_case()
                 payload = payload_for(plan)
@@ -246,7 +246,7 @@ class DigestGeneratorTests(unittest.TestCase):
                 self.assertIn(plan.entry_ids[0], captured.output[0])
 
     def test_recommended_boundaries_have_no_warning_and_count_codepoints(self):
-        for length in (80, 150):
+        for length in (70, 79, 80, 150):
             with self.subTest(length=length):
                 _, plan = make_case()
                 payload = payload_for(plan)

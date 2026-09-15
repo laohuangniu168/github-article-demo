@@ -6,7 +6,8 @@ Release date: 2026-09-16. Status: **GOLDEN**.
 
 This release freezes the implementation at
 `a9a9057e1870ddb028baf5de8c5e040b359e47b2`. The documentation commit containing
-this file is the release closure reference. No additional version file or tag
+this file is the release closure reference, including the final Daily Use Runner
+supplement. No additional version file or tag
 is required. The repository's historical Pages demo README does not define the
 v1.2 product workflow; this document defines the final v1.2 release scope.
 
@@ -162,51 +163,68 @@ passed. Offline test network attempts: 0. Secret scan: 0 matches.
 Local closure verification records are under
 `output/digest/evidence/final-release-closure/` and are not release-commit content.
 
-## How to use
+## Daily Use Quick Start
 
-Use the frozen Python tool interfaces; this release has no GUI or unified
-generation CLI. Use a Python environment with the project's existing runtime
-dependencies. Start in `E:\workspace\github-article-demo`.
+The official entrypoint is `tools/digest_run.py`. It orchestrates the frozen
+Registry, Planner, Generator, Renderer, Audit, Preview, Baseline and Safety.
+No GUI, server or historical Sandbox script is required.
 
-1. Prepare a UTF-8 local input containing one `URL|Title` pair per line. Supply
-   the Title yourself. Do not fetch the target page to fill or enrich it.
-2. Run read-only input and production checks:
+1. Start PowerShell in `E:\workspace\github-article-demo` and use the existing
+   Python environment with the OpenAI SDK and HTTP client dependencies.
+2. Save UTF-8 input to `input/daily-digest.txt`, one `URL|Title` pair per line.
+   Provide Titles yourself; targets are never fetched. Duplicate URLs fail.
+   Frozen planning requires at least 20 entries. The runner accepts only plans
+   containing one Digest; multi-Digest runs are deferred.
+3. Ensure the current process has `OPENAI_API_KEY` without printing its value.
+   Confirm API Billing availability separately. The known billing condition is
+   still unavailable; the runner stops on errors and never retries HTTP 429.
+4. Run the official command:
 
    ```powershell
-   python tools/digest_registry.py input/your-local-digest.txt
-   python tools/production_baseline.py
+   python tools/digest_run.py --input input/daily-digest.txt
    ```
 
-3. Through `tools/digest_registry.py`, call `parse_digest_file` and
-   `build_digest_registry`. Call `plan_digest_articles` from
-   `tools/digest_planner.py` with a fresh batch identifier, matching registry
-   and configuration versions, and the chosen Digest count. Inspect the plan
-   before generation. Prefer the real-validated 20-entry size; 50-entry live
-   completion has not been validated.
-4. For an explicitly authorized future generation run, supply a runtime client
-   to `generate_digest_content` from `tools/digest_generator.py`. Confirm billing
-   availability first. The existing model is `gpt-5.6`; the validated adapter
-   uses the Responses endpoint. Send only the frozen Title/identity prompt,
-   use one generation attempt and disable transport/client retries. Keep runtime
-   credentials out of files, prompts, logs and version control. Stop on failure.
-   This documentation does not authorize another call during release closure.
-5. Pass the generated result, authoritative registry and plan to
-   `render_digest_markdown`, supplying the run date. For the accepted presentation,
-   use `Hot News Digest 热点新闻汇编` as the Digest title. Use the planner filename;
-   check that new Markdown, HTML and preview-evidence destinations do not exist
-   before writing. Do not overwrite previous runs.
-6. Call `audit_digest_article` from `tools/digest_audit.py`; stop if it fails.
-   Then call `create_local_digest_preview` from `tools/digest_local_preview.py`
-   with the project root, planner filename, Markdown and passing audit status.
-   It writes only to `output/digest/markdown`, `output/digest/html` and local
-   preview evidence. Do not route new output to legacy publishing tools.
-7. Open the HTML as a local file. Check all entries, Titles, exact href values,
-   readable summaries and truthfulness. Review links without fetching target
-   pages as part of generation. Record manual acceptance locally; no automatic
-   publication follows.
-8. Check Git status and keep all local inputs, outputs and evidence unstaged.
-   If a source or release-document commit is separately authorized, stage only
-   its exact reviewed file list and inspect the staged diff before committing.
+5. On success, open the absolute path printed after `HTML=` as a local file.
+   Check all Titles, links, readable summaries and truthfulness. Each Digest
+   ends in `PENDING_MANUAL_REVIEW`; no automatic publication follows.
+6. Keep input, generated Markdown, HTML and evidence out of Git. Never use
+   legacy publishing commands or force-add ignored output.
+
+The runner derives a deterministic batch identity from parsed input identity,
+not the clock or random data. The publication date is display metadata only.
+The same input reuses the same destination and fails closed if a previous run
+or output already occupies it. No historical output is deleted or overwritten.
+
+For a deliberately separate run, supply a new explicit batch name:
+
+```powershell
+python tools/digest_run.py --input input/daily-digest.txt --batch-id daily-review-02
+```
+
+Names accept 1–80 ASCII letters, digits, hyphens and underscores, starting with
+a letter or digit. Changing the name authorizes a separate invocation; it is
+not automatic retry. Do not use it to repeat a failed API request until the
+external cause has been resolved and another attempt is authorized.
+
+Successful output includes `DIGEST_RUN_RESULT=PASS`, `ENTRIES`, `MARKDOWN`,
+`HTML`, `AUDIT=PASS`, `CLICKABLE_HREF` and `FINAL_STATE=PENDING_MANUAL_REVIEW`.
+Expected failures return a nonzero exit code and only `DIGEST_RUN_RESULT=FAIL`,
+`STAGE`, `ERROR_CODE` and a safe `MESSAGE`, without exception bodies or traceback.
+For `OPENAI_HTTP_429`, check API Billing / Rate Limit and stop.
+
+Outputs remain under `output/digest/markdown/`, `output/digest/html/` and
+`output/digest/evidence/`. After reserving a run, minimal evidence is written to
+`output/digest/evidence/<batch-id>/run-result.json`, including identities, paths,
+call count and status, without runtime credentials. Early input, baseline or
+credential failures do not reserve output. Failed reserved runs retain evidence
+and reservations; they are not silently reused. A partial preview from a failed
+write is not a successful run: only exit code 0 and PASS authorize manual review.
+
+The Runner supplement was validated with 30 offline Runner tests and 742 total
+suite tests, plus a 50-entry Fake-client CLI smoke with exact 50/50 links.
+This proves offline orchestration only, not 50-entry live AI completion. No real
+OpenAI request was made for the Runner release. The frozen core is unchanged;
+the documentation, Runner and Runner tests form its sole release supplement.
 
 Accepted reference preview:
 `E:\workspace\github-article-demo\output\digest\html\digest-8540f9b0-001.html`.
@@ -221,7 +239,7 @@ verify page facts. Manual review remains required for every new output.
 The following are **DEFERRED_V1_3**, not further v1.2 development requirements:
 
 - 50 Entry Live AI Scale Revalidation; 100 Entry Scale Validation.
-- GUI, automatic Title extraction and target-page fetching.
+- Multi-Digest Daily Runner, GUI, automatic Title extraction and target-page fetching.
 - More templates, formats and complex categorization.
 - Automatic publication and GitHub Pages.
 - Performance micro-optimizations and noncritical refactoring.

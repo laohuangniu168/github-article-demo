@@ -7,6 +7,10 @@ from dataclasses import dataclass
 from typing import Any
 
 from digest_generator import (
+    MIN_SUMMARY_CODEPOINTS,
+    MAX_SUMMARY_CODEPOINTS,
+    RECOMMENDED_MIN_SUMMARY_CODEPOINTS,
+    RECOMMENDED_MAX_SUMMARY_CODEPOINTS,
     DigestGeneratedContent,
     DigestRenderResult,
     render_digest_markdown,
@@ -293,6 +297,17 @@ def audit_digest_article(
             expected_titles.append(entry.title)
             expected_urls.append(entry.url_exact)
             expected_summaries.append(generated_entry.summary)
+            length = len(generated_entry.summary)
+            if (
+                MIN_SUMMARY_CODEPOINTS <= length <= MAX_SUMMARY_CODEPOINTS
+                and not RECOMMENDED_MIN_SUMMARY_CODEPOINTS <= length <= RECOMMENDED_MAX_SUMMARY_CODEPOINTS
+            ):
+                _add(
+                    warnings, "SUMMARY_DENSITY_WARNING", "Summary 在硬范围内，但不在推荐密度区间",
+                    entry_id=generated_entry.entry_id, field="summary",
+                    expected=(RECOMMENDED_MIN_SUMMARY_CODEPOINTS, RECOMMENDED_MAX_SUMMARY_CODEPOINTS),
+                    actual=length,
+                )
             expected_membership.append((section.name, entry.title))
 
     title_mismatches: list[str] = []

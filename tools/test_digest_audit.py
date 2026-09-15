@@ -12,7 +12,10 @@ from digest_planner import plan_digest_articles
 from digest_registry import DIGEST_CONFIG_VERSION, build_digest_registry, parse_digest_lines
 
 
-SUMMARY = "围绕该标题形成简短资讯概览，提示相关背景、发展方向以及后续值得持续观察的重点。"
+SUMMARY = (
+    "围绕该标题可以梳理相关主题的讨论范围，并区分背景介绍、观察角度与有待核实的具体信息。"
+    "阅读时可留意不同议题之间的联系，以及标题本身能够支持哪些判断，避免把主题导读当作已经核实的新闻事实。"
+)
 
 
 def make_case(count: int = 20):
@@ -76,6 +79,33 @@ def audit(case):
 
 
 class DigestAuditTests(unittest.TestCase):
+    def test_density_tolerance_is_warning_only(self):
+        for length in (60, 79, 80, 150, 151, 180):
+            with self.subTest(length=length):
+                registry, plan, generated, _ = make_case()
+                first = replace(generated.sections[0].entries[0], summary="文" * length)
+                section = replace(generated.sections[0], entries=(first,) + generated.sections[0].entries[1:])
+                generated = replace(generated, sections=(section,) + generated.sections[1:])
+                rendered = render_digest_markdown(plan=plan, registry=registry, generated_content=generated, published_date="2026-08-26")
+                result = audit((registry, plan, generated, rendered))
+                self.assertEqual("PASS", result.status)
+                self.assertEqual((), result.errors)
+                self.assertEqual(int(length < 80 or length > 150), len(result.warnings))
+                if result.warnings:
+                    warning = result.warnings[0]
+                    self.assertEqual(("SUMMARY_DENSITY_WARNING", first.entry_id, "summary", length),
+                                     (warning.code, warning.entry_id, warning.field, warning.actual))
+
+    def test_invalid_density_fails_even_when_content_and_markdown_agree(self):
+        for length in (59, 181):
+            with self.subTest(length=length):
+                registry, plan, generated, rendered = make_case()
+                first = replace(generated.sections[0].entries[0], summary="文" * length)
+                section = replace(generated.sections[0], entries=(first,) + generated.sections[0].entries[1:])
+                generated = replace(generated, sections=(section,) + generated.sections[1:])
+                rendered = with_markdown(rendered, rendered.markdown.replace(SUMMARY, first.summary, 1))
+                self.assert_fail_code((registry, plan, generated, rendered), "DIGEST_AUDIT_DETERMINISTIC_RECONSTRUCTION_MISMATCH")
+
     def assert_fail_code(self, case, code):
         result = audit(case)
         self.assertEqual("FAIL", result.status)
